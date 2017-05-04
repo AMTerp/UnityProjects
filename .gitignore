@@ -1,0 +1,4 @@
+# Ignore optimized python files
+*
+!.gitignore
+!.sh
