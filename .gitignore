@@ -1,6 +1,11 @@
 !.gitignore
 
 Race the Sun Remake/*
+!Race the Sun Remake/Assets/
+Race the Sun Remake/Assets/*
+!Race the Sun Remake/Assets/Scripts
+Race the Sun Remake/Assets/Scripts/*
+!Race the Sun Remake/Assets/Scripts/*.cs
 
 Roll a Ball/*
 !Roll a Ball/Assets/
