@@ -22,3 +22,8 @@ Space Shooter/Assets/Scripts/*
 !Space Shooter/Assets/Scripts/*.cs
 
 Top-Down Shooter/*
+!Top-Down Shooter/Assets/
+Top-Down Shooter/Assets/*
+!Top-Down Shooter/Assets/_Scripts
+Top-Down Shooter/Assets/_Scripts/*
+!Top-Down Shooter/Assets/_Scripts/*.cs
