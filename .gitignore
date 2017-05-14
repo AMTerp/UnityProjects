@@ -10,5 +10,10 @@ Roll a Ball/Assets/Scripts/*
 !Roll a Ball/Assets/Scripts/*.cs
 
 Space Shooter/*
+!Space Shooter/Assets/
+Space Shooter/Assets/*
+!Space Shooter/Assets/Scripts
+Space Shooter/Assets/Scripts/*
+!Space Shooter/Assets/Scripts/*.cs
 
 Top-Down Shooter/*
