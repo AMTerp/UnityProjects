@@ -1,4 +1,14 @@
-# Ignore optimized python files
-*
 !.gitignore
-!.sh
+
+Race the Sun Remake/*
+
+Roll a Ball/*
+!Roll a Ball/Assets/
+Roll a Ball/Assets/*
+!Roll a Ball/Assets/Scripts
+Roll a Ball/Assets/Scripts/*
+!Roll a Ball/Assets/Scripts/*.cs
+
+Space Shooter/*
+
+Top-Down Shooter/*
