@@ -33,7 +33,7 @@ public class DestroyByContact : MonoBehaviour {
             } else if (gameObject.CompareTag("Powerup"))
             {
                 PowerupController powerup = gameObject.GetComponent<PowerupController>();
-                playerController.SetGuns(powerup.numGuns, powerup.angle);
+                playerController.SetGuns(powerup.numGuns[powerup.gunType], powerup.angles[powerup.gunType]);
                 Destroy(gameObject);
             }
         }

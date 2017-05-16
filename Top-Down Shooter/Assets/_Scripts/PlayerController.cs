@@ -14,7 +14,6 @@ public class PlayerController : MonoBehaviour
     public Boundary boundary;
     public GameObject gun;
 
-    private int numGuns;
     private Rigidbody rb;
     private bool gameOver;
 
@@ -22,8 +21,7 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         gameOver = false;
-        numGuns = 2;
-        SetGuns(numGuns, 20);
+        SetGuns(1, 0);
     }
 
     void Update()
@@ -66,6 +64,8 @@ public class PlayerController : MonoBehaviour
         GameObject clone;
         for (int i = 0; i < num; i++)
         {
+            transform.rotation = Quaternion.identity;
+
             x = gunOffset * Mathf.Sin(Mathf.Deg2Rad * angle);
             z = gunOffset * Mathf.Cos(Mathf.Deg2Rad * angle);
             spawnPos = new Vector3(x, 0.0f, z) + transform.position;

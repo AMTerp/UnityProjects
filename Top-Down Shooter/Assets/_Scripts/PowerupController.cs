@@ -2,6 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+class GunSetup {
+    internal int NumGuns { get; set; }
+    internal float Angle { get; set; }
+    public GunSetup(int numGuns, float angle)
+    {
+        NumGuns = numGuns;
+        Angle = angle;
+    }
+}
+
 public class PowerupController : MonoBehaviour {
 
     public float amplitute;
@@ -10,19 +20,18 @@ public class PowerupController : MonoBehaviour {
     public float gunOffset;
     public GameObject gun;
 
-    internal int numGuns;
-    internal float angle;
-
     private Rigidbody rb;
     private GameObject player;
+        
+    internal int gunType;
+    internal int[] numGuns = { 1, 2, 3, 4, 5, 6 };
+    internal float[] angles = { 0, 10, 20, 270, 40, 315 };
 
 	// Use this for initialization
 	void Start () {
         rb = GetComponent<Rigidbody>();
         player = GameObject.FindGameObjectWithTag("Player");
-        numGuns = 4;
-        angle = 270;
-        SetGuns(4, 270);
+        SetGuns(numGuns[gunType], angles[gunType]);
         transform.LookAt(Vector3.zero);
     }
 	
@@ -33,10 +42,11 @@ public class PowerupController : MonoBehaviour {
 
     void Move()
     {
-        Vector3 movement = new Vector3(amplitute * Mathf.Sin(Time.time + frequency), 0.0f, transform.forward.z * forwardSpeed);
-        rb.velocity = movement;
+        Vector3 movement = new Vector3(amplitute * Mathf.Sin(Time.time + frequency), 0.0f, 0.0f);
+        rb.velocity = transform.forward * forwardSpeed + movement;
     }
 
+    // Try to remove this function. Already exists in PlayerController.cs
     void SetGuns(int num, float totalAngle)
     {
         float angleChange;

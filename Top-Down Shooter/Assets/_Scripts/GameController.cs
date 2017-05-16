@@ -19,6 +19,8 @@ public class GameController : MonoBehaviour {
     private int score;
     private bool gameOver;
     private bool spawnBoost;
+    private int gunSetupCounter = 1;
+    private int numGunSetups = 6;
 
 	// Use this for initialization
 	void Start () {
@@ -46,19 +48,24 @@ public class GameController : MonoBehaviour {
         {
             Vector3 spawnPosition;
             GameObject toSpawn;
-            if (spawnBoost)
+            Quaternion spawnRotation = Quaternion.identity;
+
+            if (spawnBoost && gunSetupCounter < numGunSetups)
             {
                 spawnPosition = GetPowerupSpawnPos();
                 toSpawn = powerups[Random.Range(0, powerups.Length)];
+                GameObject clone = Instantiate(toSpawn, spawnPosition, spawnRotation) as GameObject;
+
+                PowerupController powerup = clone.GetComponent<PowerupController>();
+                powerup.gunType = gunSetupCounter++;
                 spawnBoost = false;
             } else
             {
                 spawnPosition = GetHazardSpawnPos();
                 toSpawn = hazards[Random.Range(0, hazards.Length)];
+                Instantiate(toSpawn, spawnPosition, spawnRotation);
             }
 
-            Quaternion spawnRotation = Quaternion.identity;
-            Instantiate(toSpawn, spawnPosition, spawnRotation);
             yield return new WaitForSeconds(Random.Range(spawnWaitMin, spawnWaitMax));
         }
     }
