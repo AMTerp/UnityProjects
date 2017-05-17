@@ -1,0 +1,6 @@
+Todo:
+	- Polish the speed boosts' gradual speed up.
+	- Make the ground not move weirdly when pickup speedboost.
+	- Fix minor glitch of blocks moving when teleporting lane sides.
+	- Fix having two speed ups at the same time both manipulating down_speed.
+		- Maybe prevent speed ups from spawning quickly consecutively.

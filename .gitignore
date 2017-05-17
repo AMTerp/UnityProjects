@@ -3,6 +3,7 @@
 Race the Sun Remake/*
 !Race the Sun Remake/Assets/
 Race the Sun Remake/Assets/*
+!Race the Sun Remake/Assets/To do.txt
 !Race the Sun Remake/Assets/Scripts
 Race the Sun Remake/Assets/Scripts/*
 !Race the Sun Remake/Assets/Scripts/*.cs
@@ -24,6 +25,7 @@ Space Shooter/Assets/Scripts/*
 Top-Down Shooter/*
 !Top-Down Shooter/Assets/
 Top-Down Shooter/Assets/*
+!Top-Down Shooter/Assets/To do.txt
 !Top-Down Shooter/Assets/_Scripts
 Top-Down Shooter/Assets/_Scripts/*
 !Top-Down Shooter/Assets/_Scripts/*.cs
