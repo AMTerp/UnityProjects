@@ -4,15 +4,22 @@ using UnityEngine;
 
 public class ZombieController : MonoBehaviour {
 
-    public float speed;
-
+    private float speed;
     private Rigidbody rb;
     private bool gameOver;
     private GameObject player;
+    private GameController gameController;
 
     // Use this for initialization
     void Start () {
+        GameObject gameControllerObject = GameObject.FindWithTag("GameController");
+        if (gameControllerObject != null)
+        {
+            gameController = gameControllerObject.GetComponent<GameController>();
+        }
+
         rb = GetComponent<Rigidbody>();
+        speed = gameController.zombieSpeed;
         player = GameObject.FindGameObjectWithTag("Player");
         gameOver = false;
     }

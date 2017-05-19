@@ -15,6 +15,7 @@ public class GameController : MonoBehaviour {
     public GameObject[] hazards;
     public GameObject[] powerups;
     public Boundary boundary;
+    public float zombieSpeed;
 
     private int score;
     private bool gameOver;
