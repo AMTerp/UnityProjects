@@ -6,8 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 
-    public Text restartText;
     public Text scoreText;
+    public Text timerText;
+    public Text restartText;
     public int powerupInterval;
     public float spawnWaitMin;
     public float spawnWaitMax;
@@ -40,8 +41,9 @@ public class GameController : MonoBehaviour {
         initSpawnMax = spawnWaitMax;
         initSpawnMin = spawnWaitMin;
 
-        restartText.text = "";
         scoreText.text = "Zombies Killed: 0";
+        timerText.text = "Time:   0";
+        restartText.text = "";
         StartCoroutine(SpawnWaves());
         StartCoroutine(DifficultyAdjuster());
 	}
@@ -64,13 +66,14 @@ public class GameController : MonoBehaviour {
             seconds = Time.timeSinceLevelLoad;
 
             // This function increases speed by 700 over 2 minutes, given that zombieSpeedDiff = 1.
-            zombieSpeed = 70 / 12 * zombieSpeedDiff * seconds + initZombieSpeed;
+            zombieSpeed = 70.0f / 12 * zombieSpeedDiff * seconds + initZombieSpeed;
 
             // With this function, spawnWaitMax = 0.2, spawnWaitMin = 0.05 | 
             // seconds = 120, zombieSpawnDivisor = 8, initSpawnMax = 0.5, initSpawnMin = 0.2
             spawnWaitMax = -seconds / (zombieSpawnDivisor * 50) + initSpawnMax;
             spawnWaitMin = -seconds / (zombieSpawnDivisor * 100) + initSpawnMin;
 
+            timerText.text = "Time: " + ((int) seconds).ToString().PadLeft(3, ' ');
             yield return new WaitForSeconds(1);
         }
     }
