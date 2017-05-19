@@ -20,8 +20,9 @@ public class GameController : MonoBehaviour {
     public float zombieSpeedDiff;
     public float zombieSpawnDivisor;
 
+    internal bool gameOver;
+
     private int score;
-    private bool gameOver;
     private bool spawnBoost;
     private int gunSetupCounter = 1;
     private int numGunSetups = 6;

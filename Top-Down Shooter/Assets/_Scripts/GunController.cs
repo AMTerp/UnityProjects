@@ -23,7 +23,7 @@ public class GunController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (gameObject.transform.parent.CompareTag("Player") && Input.GetButton("Fire1") && Time.time > nextFire)
+        if (gameObject.transform.parent.CompareTag("Player") && Input.GetButton("Fire1") && Time.time > nextFire && !gameController.gameOver)
         {
             Instantiate(particle, transform.position, transform.rotation);
             nextFire = Time.time + firePause;
