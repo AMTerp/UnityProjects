@@ -22,6 +22,7 @@ public class PowerupController : MonoBehaviour {
 
     private Rigidbody rb;
     private GameObject player;
+    private bool gameOver;
         
     internal int gunType;
     internal int[] numGuns = { 1, 2, 3, 4, 5, 6 };
@@ -33,11 +34,15 @@ public class PowerupController : MonoBehaviour {
         player = GameObject.FindGameObjectWithTag("Player");
         SetGuns(numGuns[gunType], angles[gunType]);
         transform.LookAt(Vector3.zero);
+        gameOver = false;
     }
 	
 	// Update is called once per frame
 	void Update () {
-        Move();
+        if (!gameOver)
+        {
+            Move();
+        }
 	}
 
     void Move()
@@ -75,5 +80,11 @@ public class PowerupController : MonoBehaviour {
 
             angle += angleChange;
         }
+    }
+
+    void GameOver()
+    {
+        gameOver = true;
+        rb.velocity = Vector3.zero;
     }
 }

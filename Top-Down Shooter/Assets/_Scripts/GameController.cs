@@ -135,7 +135,7 @@ public class GameController : MonoBehaviour {
     internal void BroadcastGameOver()
     {
         GameObject[] sendObjects;
-        string[] tags = new string[] { "GameController", "Player", "Enemy" };
+        string[] tags = new string[] { "GameController", "Player", "Enemy", "Powerup" };
         foreach (string tag in tags)
         {
             sendObjects = GameObject.FindGameObjectsWithTag(tag);
