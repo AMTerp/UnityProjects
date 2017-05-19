@@ -7,4 +7,6 @@ To do:
 
 	- Make it so that picking up worse powerups doesn't replace better ones
 	- Implement fire rate increase spawns
-	- Implement difficulty levels.
+	- Implement difficulty levels, pehaps 1, 2, 3 instead of R for restarting at certain 
+      difficulties.
+    - Add an exit button on restart screen.

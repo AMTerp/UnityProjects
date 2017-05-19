@@ -28,7 +28,6 @@ Pretty barebones, but it contains the basics. Features include:
 - Looping left-right obstacles.
 - A soundtrack.
 
-### Zombie Shooter [[Download]](https://mega.nz/#!a8ATFZbB!xW5QNRPzqf2FPqZXoqqTr0iIMA_XLYaNHwgam7dN27A) (May 8, 2017) (In-progress)
 A simple top down arena shooter. Wanted to make something involving cursor position. Currently work in progress, latest build likely behaves undesirably.
 - Player can move around within a square and shoot at the zombies.
 - "Zombies" spawn at the edges of the screen and move towards the player.
