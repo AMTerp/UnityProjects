@@ -47,8 +47,7 @@ public class PowerupController : MonoBehaviour {
 
     void Move()
     {
-        Vector3 movement = new Vector3(amplitute * Mathf.Sin(Time.time + frequency), 0.0f, 0.0f);
-        rb.velocity = transform.forward * forwardSpeed + movement;
+        rb.velocity = transform.forward * forwardSpeed + transform.right * Mathf.Sin(Time.time + frequency) * amplitute;
     }
 
     // Try to remove this function. Already exists in PlayerController.cs
