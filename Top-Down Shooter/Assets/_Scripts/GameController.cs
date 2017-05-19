@@ -54,6 +54,8 @@ public class GameController : MonoBehaviour {
         while (!gameOver)
         {
             seconds = Time.timeSinceLevelLoad;
+            // This function increases speed by 700 over 2 minutes, given that zombieSpeedDiff = 1.
+            zombieSpeed = 70 / 12 * zombieSpeedDiff * seconds + zombieInitSpeed;
             Debug.Log("Speed changed to " + zombieSpeed);
             yield return new WaitForSeconds(1);
         }
