@@ -7,3 +7,4 @@ To do:
 
 	- Make it so that picking up worse powerups doesn't replace better ones
 	- Implement fire rate increase spawns
+	- Implement difficulty levels.
