@@ -122,6 +122,7 @@ public class GameController : MonoBehaviour {
         if (score % powerupInterval == 0)
         {
             spawnBoost = true;
+            powerupInterval *= 2;
         }
     }
 
