@@ -15,21 +15,27 @@ public class GameController : MonoBehaviour {
     public GameObject[] hazards;
     public GameObject[] powerups;
     public Boundary boundary;
+
     public float zombieSpeed;
+    public float zombieSpeedDiff;
 
     private int score;
     private bool gameOver;
     private bool spawnBoost;
     private int gunSetupCounter = 1;
     private int numGunSetups = 6;
+    private float seconds;
+    private float zombieInitSpeed;
 
 	// Use this for initialization
 	void Start () {
         gameOver = false;
         spawnBoost = false;
+        zombieInitSpeed = zombieSpeed;
         restartText.text = "";
         scoreText.text = "Zombies Killed: 0";
         StartCoroutine(SpawnWaves());
+        StartCoroutine(DifficultyAdjuster());
 	}
 	
 	// Update is called once per frame
@@ -42,6 +48,16 @@ public class GameController : MonoBehaviour {
             }
         }
 	}
+
+    IEnumerator DifficultyAdjuster()
+    {
+        while (!gameOver)
+        {
+            seconds = Time.timeSinceLevelLoad;
+            Debug.Log("Speed changed to " + zombieSpeed);
+            yield return new WaitForSeconds(1);
+        }
+    }
 
     IEnumerator SpawnWaves()
     {
