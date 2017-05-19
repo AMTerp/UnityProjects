@@ -26,7 +26,7 @@ public class GameController : MonoBehaviour {
     private int score;
     private bool spawnBoost;
     private int gunSetupCounter = 1;
-    private int numGunSetups = 6;
+    private int numGunSetups = 8;
     private float seconds;
     private float initZombieSpeed;
     private float initSpawnMax;

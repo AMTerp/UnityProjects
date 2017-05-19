@@ -25,8 +25,8 @@ public class PowerupController : MonoBehaviour {
     private bool gameOver;
         
     internal int gunType;
-    internal int[] numGuns = { 1, 2, 3, 4, 5, 6 };
-    internal float[] angles = { 0, 10, 20, 270, 40, 315 };
+    internal int[] numGuns = { 1, 2, 3, 4, 5, 6, 7, 8 };
+    internal float[] angles = { 0, 10, 20, 270, 40, 300, 30, 315};
 
 	// Use this for initialization
 	void Start () {

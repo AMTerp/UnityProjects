@@ -1,7 +1,9 @@
 To do:
-	- Implement gradual difficulty increase
 	- Implement obstacles
 		- Implement pathfinding for zombies
 
 	- Implement death animation
 		- e.g. zombie turns red and stands still for 0.2 seconds before disappearing
+
+	- Make it so that picking up worse powerups doesn't replace better ones
+	- Implement fire rate increase spawns
