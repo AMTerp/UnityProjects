@@ -44,7 +44,6 @@ public class PlayerController : MonoBehaviour
     {
         for (int i = 1; i < transform.childCount; i++)
         {
-            Debug.Log(transform.GetChild(i).gameObject.name);
             Destroy(transform.GetChild(i).gameObject);
         }
 
@@ -69,7 +68,6 @@ public class PlayerController : MonoBehaviour
             x = gunOffset * Mathf.Sin(Mathf.Deg2Rad * angle);
             z = gunOffset * Mathf.Cos(Mathf.Deg2Rad * angle);
             spawnPos = new Vector3(x, 0.0f, z) + transform.position;
-            Debug.Log(string.Format("Set gun at {0}, {1}", x, z));
             clone = Instantiate(gun, spawnPos, Quaternion.identity) as GameObject;
             clone.transform.Rotate(new Vector3(0, angle, 0));
             clone.transform.parent = transform;

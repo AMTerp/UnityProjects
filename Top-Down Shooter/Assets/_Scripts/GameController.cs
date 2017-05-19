@@ -18,6 +18,7 @@ public class GameController : MonoBehaviour {
 
     public float zombieSpeed;
     public float zombieSpeedDiff;
+    public float zombieSpawnDivisor;
 
     private int score;
     private bool gameOver;
@@ -25,13 +26,19 @@ public class GameController : MonoBehaviour {
     private int gunSetupCounter = 1;
     private int numGunSetups = 6;
     private float seconds;
-    private float zombieInitSpeed;
+    private float initZombieSpeed;
+    private float initSpawnMax;
+    private float initSpawnMin;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         gameOver = false;
         spawnBoost = false;
-        zombieInitSpeed = zombieSpeed;
+
+        initZombieSpeed = zombieSpeed;
+        initSpawnMax = spawnWaitMax;
+        initSpawnMin = spawnWaitMin;
+
         restartText.text = "";
         scoreText.text = "Zombies Killed: 0";
         StartCoroutine(SpawnWaves());
@@ -54,9 +61,15 @@ public class GameController : MonoBehaviour {
         while (!gameOver)
         {
             seconds = Time.timeSinceLevelLoad;
+
             // This function increases speed by 700 over 2 minutes, given that zombieSpeedDiff = 1.
-            zombieSpeed = 70 / 12 * zombieSpeedDiff * seconds + zombieInitSpeed;
-            Debug.Log("Speed changed to " + zombieSpeed);
+            zombieSpeed = 70 / 12 * zombieSpeedDiff * seconds + initZombieSpeed;
+
+            // With this function, spawnWaitMax = 0.2, spawnWaitMin = 0.05 | 
+            // seconds = 120, zombieSpawnDivisor = 8, initSpawnMax = 0.5, initSpawnMin = 0.2
+            spawnWaitMax = -seconds / (zombieSpawnDivisor * 50) + initSpawnMax;
+            spawnWaitMin = -seconds / (zombieSpawnDivisor * 100) + initSpawnMin;
+
             yield return new WaitForSeconds(1);
         }
     }
