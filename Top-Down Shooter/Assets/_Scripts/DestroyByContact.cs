@@ -37,14 +37,18 @@ public class DestroyByContact : MonoBehaviour {
                 Destroy(gameObject);
             }
         }
-        else if (other.gameObject.CompareTag("Enemy"))
+        else if (other.gameObject.CompareTag("Enemy") && other.isTrigger)
         {
-            if (!(gameObject.CompareTag("Enemy") || gameObject.CompareTag("Powerup")))
+            if (gameObject.CompareTag("PlayerShot"))
             {
                 Destroy(other.gameObject);
                 Destroy(gameObject);
                 gameController.AddScore();
             }
+        }
+        else if (other.gameObject.CompareTag("PlayerShot") && gameObject.CompareTag("Obstacle"))
+        {
+            Destroy(other.gameObject);
         }
     }
 }

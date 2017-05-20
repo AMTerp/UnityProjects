@@ -54,6 +54,7 @@ public class GameController : MonoBehaviour {
         {
             if (Input.GetKeyDown(KeyCode.R))
             {
+                Time.timeScale = 1;
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
         }
@@ -164,6 +165,7 @@ public class GameController : MonoBehaviour {
     void GameOver()
     {
         gameOver = true;
+        Time.timeScale = 0;
         restartText.text = "Press 'R' to restart"; 
     }
 }
