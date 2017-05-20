@@ -10,8 +10,6 @@ public class GameController : MonoBehaviour {
     public Text timerText;
     public Text restartText;
     public int powerupInterval;
-    public float spawnWaitMin;
-    public float spawnWaitMax;
     public float boundaryThickness;
     public GameObject[] hazards;
     public GameObject[] powerups;
@@ -21,16 +19,20 @@ public class GameController : MonoBehaviour {
     public float zombieSpeedDiff;
     public float zombieSpawnDivisor;
 
+    public float spawnWaitMax;
+    public float spawnWaitMin;
+
     internal bool gameOver;
 
+    private static int difficulty = 2;
     private int score;
     private bool spawnBoost;
     private int gunSetupCounter = 1;
     private int numGunSetups = 8;
     private float seconds;
-    private float initZombieSpeed;
     private float initSpawnMax;
     private float initSpawnMin;
+    private float initZombieSpeed;
 
     // Use this for initialization
     void Start () {
@@ -40,6 +42,22 @@ public class GameController : MonoBehaviour {
         initZombieSpeed = zombieSpeed;
         initSpawnMax = spawnWaitMax;
         initSpawnMin = spawnWaitMin;
+
+        if (difficulty == 1)
+        {
+            zombieSpeed *= 0.8f;
+            spawnWaitMax *= 1.2f;
+            spawnWaitMin *= 1.2f;
+            zombieSpeedDiff *= 0.8f;
+            zombieSpawnDivisor *= 1.2f;
+        } else if (difficulty == 3)
+        {
+            zombieSpeed *= 1.2f;
+            spawnWaitMax *= 0.8f;
+            spawnWaitMin *= 0.8f;
+            zombieSpeedDiff *= 1.2f;
+            zombieSpawnDivisor *= 0.8f;
+        }
 
         scoreText.text = "Zombies Killed: 0";
         timerText.text = "Time:   0";
@@ -52,9 +70,24 @@ public class GameController : MonoBehaviour {
 	void Update () {
 		if (gameOver)
         {
-            if (Input.GetKeyDown(KeyCode.R))
+            if (Input.GetKeyDown(KeyCode.Alpha1))
             {
                 Time.timeScale = 1;
+                difficulty = 1;
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                Time.timeScale = 1;
+                difficulty = 2;
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                Time.timeScale = 1;
+                difficulty = 3;
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
         }
@@ -166,6 +199,11 @@ public class GameController : MonoBehaviour {
     {
         gameOver = true;
         Time.timeScale = 0;
-        restartText.text = "Press 'R' to restart"; 
+        restartText.text = @"
+            You died!
+            To restart, press:
+            '1' for easy
+            '2' for medium
+            '3' for hard"; 
     }
 }

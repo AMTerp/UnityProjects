@@ -1,12 +1,8 @@
 To do:
-	- Implement obstacles
-		- Implement pathfinding for zombies
-
 	- Implement death animation
 		- e.g. zombie turns red and stands still for 0.2 seconds before disappearing
 
 	- Make it so that picking up worse powerups doesn't replace better ones
 	- Implement fire rate increase spawns
-	- Implement difficulty levels, pehaps 1, 2, 3 instead of R for restarting at certain 
-      difficulties.
 	- Add an exit button on restart screen.
+	- Fix bug where initial speed value is not affected by difficulty.
