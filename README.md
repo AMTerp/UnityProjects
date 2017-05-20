@@ -28,9 +28,10 @@ Pretty barebones, but it contains the basics. Features include:
 - Looping left-right obstacles.
 - A soundtrack.
 
-### Top-Down Shooter [[Download]](https://mega.nz/#!ShBkhDqT!1uflHCtOh4fFzG57VEE7z77UVMj60g87A8KRoYWF7b0) (May 19, 2017) (In-progress)
+### Top-Down Shooter [[Download]](https://mega.nz/#!PsoE3LSA!oT0CdX1AQqf8eLHhb1c68w3BluhvwGzhGsYSnkuHTvY) (May 20, 2017) (In-progress)
 A simple top down arena shooter. Wanted to make something involving cursor position. Currently work in progress, latest build likely behaves undesirably.
 - Player can move around within a square and shoot at the zombies.
 - "Zombies" spawn at the edges of the screen and move towards the player.
 - Zombie spawn rate and movement speed increases over time.
+- Choose difficulty from easy, medium, or hard.
 - Gun upgrades spawn on occasion. Picking these up increases the number of guns the player has.
