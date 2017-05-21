@@ -90,6 +90,11 @@ public class GameController : MonoBehaviour {
                 difficulty = 3;
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
+
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                Application.Quit();
+            }
         }
 	}
 
@@ -204,6 +209,7 @@ public class GameController : MonoBehaviour {
             To restart, press:
             '1' for easy
             '2' for medium
-            '3' for hard"; 
+            '3' for hard
+            or 'E' to exit"; 
     }
 }
