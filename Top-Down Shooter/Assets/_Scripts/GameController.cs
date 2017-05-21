@@ -11,10 +11,13 @@ public class GameController : MonoBehaviour {
     public Text pauseText;
     public Text restartText;
     public RectTransform pauseBG;
-    public int powerupInterval;
+    public int levelUpGunsInterval;
     public float boundaryThickness;
+    public float firePause;
     public GameObject[] hazards;
-    public GameObject[] powerups;
+    public GameObject gunLevelUp;
+    public GameObject fireRateBoost;
+    public float fireRateBoostInterval;
     public Boundary boundary;
 
     public float zombieSpeed;
@@ -29,7 +32,7 @@ public class GameController : MonoBehaviour {
 
     private static int difficulty = 2;
     private int score;
-    private bool spawnBoost;
+    private bool spawnGunLevelUp;
     private int gunSetupCounter = 1;
     private int numGunSetups = 8;
     private float seconds;
@@ -40,29 +43,29 @@ public class GameController : MonoBehaviour {
     // Use this for initialization
     void Start () {
         gameOver = false;
-        spawnBoost = false;
+        spawnGunLevelUp = false;
         paused = 0;
         pauseBG.gameObject.SetActive(paused == 1);
 
-        initZombieSpeed = zombieSpeed;
-        initSpawnMax = spawnWaitMax;
-        initSpawnMin = spawnWaitMin;
-
         if (difficulty == 1)
         {
-            zombieSpeed *= 0.8f;
-            spawnWaitMax *= 1.2f;
-            spawnWaitMin *= 1.2f;
+            zombieSpeed *= 0.5f;
+            spawnWaitMax *= 1.5f;
+            spawnWaitMin *= 1.5f;
             zombieSpeedDiff *= 0.8f;
             zombieSpawnDivisor *= 1.2f;
         } else if (difficulty == 3)
         {
-            zombieSpeed *= 1.2f;
+            zombieSpeed *= 1.5f;
             spawnWaitMax *= 0.8f;
             spawnWaitMin *= 0.8f;
             zombieSpeedDiff *= 1.2f;
             zombieSpawnDivisor *= 0.8f;
         }
+
+        initZombieSpeed = zombieSpeed;
+        initSpawnMax = spawnWaitMax;
+        initSpawnMin = spawnWaitMin;
 
         scoreText.text = "Zombies Killed: 0";
         timerText.text = "Time:   0";
@@ -70,6 +73,7 @@ public class GameController : MonoBehaviour {
         SetPauseText();
 
         StartCoroutine(SpawnWaves());
+        StartCoroutine(FireBoostSpawner());
         StartCoroutine(DifficultyAdjuster());
 	}
 	
@@ -116,6 +120,20 @@ public class GameController : MonoBehaviour {
         }
 	}
 
+    IEnumerator FireBoostSpawner()
+    {
+        Vector3 spawnPosition;
+        Quaternion spawnRotation = Quaternion.identity;
+
+        while (!gameOver)
+        {
+            yield return new WaitForSeconds(fireRateBoostInterval);
+
+            spawnPosition = GetPowerupSpawnPos();
+            Instantiate(fireRateBoost, spawnPosition, spawnRotation);
+        }
+    }
+
     IEnumerator DifficultyAdjuster()
     {
         while (!gameOver)
@@ -143,15 +161,15 @@ public class GameController : MonoBehaviour {
             GameObject toSpawn;
             Quaternion spawnRotation = Quaternion.identity;
 
-            if (spawnBoost && gunSetupCounter < numGunSetups)
+            if (spawnGunLevelUp && gunSetupCounter < numGunSetups)
             {
                 spawnPosition = GetPowerupSpawnPos();
-                toSpawn = powerups[Random.Range(0, powerups.Length)];
+                toSpawn = gunLevelUp;
                 GameObject clone = Instantiate(toSpawn, spawnPosition, spawnRotation) as GameObject;
 
-                PowerupController powerup = clone.GetComponent<PowerupController>();
+                GunLevelUpController powerup = clone.GetComponent<GunLevelUpController>();
                 powerup.gunType = gunSetupCounter++;
-                spawnBoost = false;
+                spawnGunLevelUp = false;
             } else
             {
                 spawnPosition = GetHazardSpawnPos();
@@ -195,7 +213,7 @@ public class GameController : MonoBehaviour {
     internal void BroadcastGameOver()
     {
         GameObject[] sendObjects;
-        string[] tags = new string[] { "GameController", "Player", "Enemy", "Powerup" };
+        string[] tags = new string[] { "GameController", "Player", "Enemy", "GunLevelUp" };
         foreach (string tag in tags)
         {
             sendObjects = GameObject.FindGameObjectsWithTag(tag);
@@ -211,10 +229,10 @@ public class GameController : MonoBehaviour {
         score++;
         scoreText.text = "Zombies Killed: " + score;
 
-        if (score % powerupInterval == 0)
+        if (score % levelUpGunsInterval == 0)
         {
-            spawnBoost = true;
-            powerupInterval *= 2;
+            spawnGunLevelUp = true;
+            levelUpGunsInterval *= 2;
         }
     }
 

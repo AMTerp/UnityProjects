@@ -30,10 +30,15 @@ public class DestroyByContact : MonoBehaviour {
             {
                 gameController.BroadcastGameOver();
                 Debug.Log("Broadcasted");
-            } else if (gameObject.CompareTag("Powerup"))
+            } else if (gameObject.CompareTag("GunLevelUp"))
             {
-                PowerupController powerup = gameObject.GetComponent<PowerupController>();
+                GunLevelUpController powerup = gameObject.GetComponent<GunLevelUpController>();
                 playerController.SetGuns(powerup.numGuns[powerup.gunType], powerup.angles[powerup.gunType]);
+                Destroy(gameObject);
+            } else if (gameObject.CompareTag("FireRateBoost"))
+            {
+                FireRateBoostController powerup = gameObject.GetComponent<FireRateBoostController>();
+                powerup.IncreaseFireRate();
                 Destroy(gameObject);
             }
         }

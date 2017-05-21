@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class GunController : MonoBehaviour {
 
-    public float firePause;
     public GameObject particle;
 
     private float nextFire;
@@ -27,7 +26,7 @@ public class GunController : MonoBehaviour {
             Time.time > nextFire && !gameController.gameOver && !(gameController.paused == 1))
         {
             Instantiate(particle, transform.position, transform.rotation);
-            nextFire = Time.time + firePause;
+            nextFire = Time.time + gameController.firePause;
         }
     }
 }

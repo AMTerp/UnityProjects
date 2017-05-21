@@ -6,7 +6,7 @@ public class DestroyByBoundary : MonoBehaviour {
 
     void OnTriggerExit(Collider other) 
     {
-        if (!other.gameObject.CompareTag("Powerup"))
+        if (!other.gameObject.CompareTag("GunLevelUp") || !other.gameObject.CompareTag("FireRateBoost"))
         {
             Destroy(other.gameObject);
         }

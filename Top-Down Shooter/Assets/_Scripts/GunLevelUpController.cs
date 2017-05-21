@@ -12,11 +12,8 @@ class GunSetup {
     }
 }
 
-public class PowerupController : MonoBehaviour {
+public class GunLevelUpController : MonoBehaviour {
 
-    public float amplitute;
-    public float forwardSpeed;
-    public float frequency;
     public float gunOffset;
     public GameObject gun;
 
@@ -25,6 +22,7 @@ public class PowerupController : MonoBehaviour {
     private bool gameOver;
         
     internal int gunType;
+    internal string powerupType = "GunLevelUp";
     internal int[] numGuns = { 1, 2, 3, 4, 5, 6, 7, 8 };
     internal float[] angles = { 0, 10, 20, 270, 40, 300, 30, 315};
 
@@ -35,19 +33,6 @@ public class PowerupController : MonoBehaviour {
         SetGuns(numGuns[gunType], angles[gunType]);
         transform.LookAt(Vector3.zero);
         gameOver = false;
-    }
-	
-	// Update is called once per frame
-	void Update () {
-        if (!gameOver)
-        {
-            Move();
-        }
-	}
-
-    void Move()
-    {
-        rb.velocity = transform.forward * forwardSpeed + transform.right * Mathf.Sin(Time.time + frequency) * amplitute;
     }
 
     // Try to remove this function. Already exists in PlayerController.cs

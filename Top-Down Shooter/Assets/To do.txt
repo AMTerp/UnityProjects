@@ -1,8 +1,3 @@
 To do:
 	- Implement death animation
 		- e.g. zombie turns red and stands still for 0.2 seconds before disappearing
-
-	- Make it so that picking up worse powerups doesn't replace better ones
-	- Implement fire rate increase spawns
-	- Add an exit button on restart screen.
-	- Fix bug where initial speed value is not affected by difficulty.
