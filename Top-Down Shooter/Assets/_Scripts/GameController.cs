@@ -8,7 +8,9 @@ public class GameController : MonoBehaviour {
 
     public Text scoreText;
     public Text timerText;
+    public Text pauseText;
     public Text restartText;
+    public RectTransform pauseBG;
     public int powerupInterval;
     public float boundaryThickness;
     public GameObject[] hazards;
@@ -22,6 +24,7 @@ public class GameController : MonoBehaviour {
     public float spawnWaitMax;
     public float spawnWaitMin;
 
+    internal int paused;
     internal bool gameOver;
 
     private static int difficulty = 2;
@@ -38,6 +41,8 @@ public class GameController : MonoBehaviour {
     void Start () {
         gameOver = false;
         spawnBoost = false;
+        paused = 0;
+        pauseBG.gameObject.SetActive(paused == 1);
 
         initZombieSpeed = zombieSpeed;
         initSpawnMax = spawnWaitMax;
@@ -62,6 +67,8 @@ public class GameController : MonoBehaviour {
         scoreText.text = "Zombies Killed: 0";
         timerText.text = "Time:   0";
         restartText.text = "";
+        SetPauseText();
+
         StartCoroutine(SpawnWaves());
         StartCoroutine(DifficultyAdjuster());
 	}
@@ -94,6 +101,17 @@ public class GameController : MonoBehaviour {
             if (Input.GetKeyDown(KeyCode.E))
             {
                 Application.Quit();
+            }
+
+        }
+        else
+        {
+            // Not gameOver.
+            if (Input.GetKeyDown(KeyCode.Escape)) {
+                Time.timeScale = paused;
+                paused = (paused + 1) % 2;
+                SetPauseText();
+                pauseBG.gameObject.SetActive(paused == 1);
             }
         }
 	}
@@ -197,6 +215,17 @@ public class GameController : MonoBehaviour {
         {
             spawnBoost = true;
             powerupInterval *= 2;
+        }
+    }
+
+    void SetPauseText()
+    {
+        if (paused == 1)
+        {
+            pauseText.text = "Paused";
+        } else
+        {
+            pauseText.text = "";
         }
     }
 

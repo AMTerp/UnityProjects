@@ -14,19 +14,28 @@ public class PlayerController : MonoBehaviour
     public Boundary boundary;
     public GameObject gun;
 
+    private int numGuns;
     private Rigidbody rb;
     private bool gameOver;
+    private GameController gameController;
 
     void Start()
     {
+        GameObject gameControllerObject = GameObject.FindWithTag("GameController");
+        if (gameControllerObject != null)
+        {
+            gameController = gameControllerObject.GetComponent<GameController>();
+        }
+
         rb = GetComponent<Rigidbody>();
         gameOver = false;
-        SetGuns(1, 0);
+        numGuns = 1;
+        SetGuns(numGuns, 0);
     }
 
     void Update()
     {
-        if (!gameOver)
+        if (!gameOver && !(gameController.paused == 1))
         {
             RotateToMouse();
         }
@@ -42,6 +51,13 @@ public class PlayerController : MonoBehaviour
 
     internal void SetGuns(int num, float totalAngle)
     {
+        if (num < numGuns)
+        {
+            return;
+        }
+
+        numGuns = num;
+
         for (int i = 1; i < transform.childCount; i++)
         {
             Destroy(transform.GetChild(i).gameObject);
