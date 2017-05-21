@@ -26,12 +26,15 @@ Pretty barebones, but it contains the basics. Features include:
 - Randomly placed speed-boosts.
 - Speed-dependent field of view.
 - Looping left-right obstacles.
-- A soundtrack.
+- A soundtrack [[YT Link]](https://www.youtube.com/watch?v=DDCIIiRVooc).
 
-### Top-Down Shooter [[Download]](https://mega.nz/#!PsoE3LSA!oT0CdX1AQqf8eLHhb1c68w3BluhvwGzhGsYSnkuHTvY) (May 20, 2017) (In-progress)
+### Top-Down Shooter [[Download]](https://mega.nz/#!2gpw2ahY!oYQngdMvIqa3KuiRmFCE_kKovgsUGhF4OZV_sjVAGZg) (May 21, 2017)
 A simple top down arena shooter. Wanted to make something involving cursor position. Currently work in progress, latest build likely behaves undesirably.
 - Player can move around within a square and shoot at the zombies.
 - "Zombies" spawn at the edges of the screen and move towards the player.
 - Zombie spawn rate and movement speed increases over time.
 - Choose difficulty from easy, medium, or hard.
 - Gun upgrades spawn on occasion. Picking these up increases the number of guns the player has.
+- A soundtrack [[YT Link]](https://www.youtube.com/watch?v=hppMvp5nA1U)
+- Can pause!
+- Can exit!
