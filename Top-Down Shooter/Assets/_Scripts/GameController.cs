@@ -27,9 +27,12 @@ public class GameController : MonoBehaviour {
     public float spawnWaitMax;
     public float spawnWaitMin;
 
+    public float fadeOutSpeed;
+
     internal int paused;
     internal bool gameOver;
 
+    private AudioSource music;
     private static int difficulty = 2;
     private int score;
     private bool spawnGunLevelUp;
@@ -46,6 +49,9 @@ public class GameController : MonoBehaviour {
         spawnGunLevelUp = false;
         paused = 0;
         pauseBG.gameObject.SetActive(paused == 1);
+
+        music = GetComponent<AudioSource>();
+        music.Play();
 
         if (difficulty == 1)
         {
@@ -116,6 +122,14 @@ public class GameController : MonoBehaviour {
                 paused = (paused + 1) % 2;
                 SetPauseText();
                 pauseBG.gameObject.SetActive(paused == 1);
+
+                if (paused == 1)
+                {
+                    music.Pause();
+                } else
+                {
+                    music.UnPause();
+                }
             }
         }
 	}
@@ -250,6 +264,7 @@ public class GameController : MonoBehaviour {
     void GameOver()
     {
         gameOver = true;
+        StartCoroutine(fadeOut());
         Time.timeScale = 0;
         restartText.text = @"
             You died!
@@ -258,5 +273,15 @@ public class GameController : MonoBehaviour {
             '2' for medium
             '3' for hard
             or 'E' to exit"; 
+    }
+
+    IEnumerator fadeOut()
+    {
+        while (music.volume > 0)
+        {
+            music.volume -= fadeOutSpeed;
+            yield return new WaitForSecondsRealtime(0.01f);
+        }
+        music.Stop();
     }
 }
