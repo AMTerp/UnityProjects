@@ -38,3 +38,13 @@ A simple top down arena shooter. Wanted to make something involving cursor posit
 - A soundtrack [[YT Link]](https://www.youtube.com/watch?v=hppMvp5nA1U)
 - Can pause!
 - Can exit!
+
+### Castle Defender (May 22, 2017) (Work in progress)
+A first person pseudo-tower defender. Currently in its earliest stages. Planned features include:
+- Roaming atop the walls of your castle.
+- Defending from dozens (maybe 100s) of enemies charging your gates.
+- Use guns and explosives to defend your castle.
+- Ragdoll physics
+- Sound effects
+
+For a detailed plan of features, see Castle Defender/Assets/To do.xlsx/.

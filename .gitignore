@@ -29,3 +29,11 @@ Top-Down Shooter/Assets/*
 !Top-Down Shooter/Assets/_Scripts
 Top-Down Shooter/Assets/_Scripts/*
 !Top-Down Shooter/Assets/_Scripts/*.cs
+
+Castle Defender/*
+!Castle Defender/Assets/
+Castle Defender/Assets/*
+!Castle Defender/Assets/To do.xlsx
+!Castle Defender/Assets/_Scripts
+Castle Defender/Assets/_Scripts/*
+!Castle Defender/Assets/_Scripts/*.cs
