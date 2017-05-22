@@ -29,7 +29,7 @@ Pretty barebones, but it contains the basics. Features include:
 - A soundtrack [[YT Link]](https://www.youtube.com/watch?v=DDCIIiRVooc).
 
 ### Top-Down Shooter [[Download]](https://mega.nz/#!O8hyHb7T!5s8nx-8m1aq-TwMVyTPSMwD5HdJZ2FX8wi8l6iBVxWs) (May 22, 2017)
-A simple top down arena shooter. Wanted to make something involving cursor position. Currently work in progress, latest build likely behaves undesirably.
+A simple top down arena shooter. Wanted to make something involving cursor position.
 - Player can move around within a square and shoot at the zombies.
 - "Zombies" spawn at the edges of the screen and move towards the player.
 - Zombie spawn rate and movement speed increases over time.
