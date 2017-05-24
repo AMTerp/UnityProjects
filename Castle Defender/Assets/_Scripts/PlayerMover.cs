@@ -28,6 +28,7 @@ public class PlayerMover : MonoBehaviour {
 
         movement = moveX + moveY;
 
-        rb.velocity = movement * movementSpeed;
+        // Going just straight is slower than going diagonal. Find fix.
+        rb.velocity = movement.normalized * movementSpeed * Time.deltaTime;
     }
 }

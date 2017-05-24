@@ -17,7 +17,7 @@ public class MouseLookX : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;
+        rotationX += Input.GetAxis("Mouse X") * sensitivityX * Time.deltaTime;
 
         transform.localEulerAngles = new Vector3(0, rotationX, 0);
     }

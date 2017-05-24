@@ -17,7 +17,7 @@ public class MouseLookY : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
+        rotationY += Input.GetAxis("Mouse Y") * sensitivityY * Time.deltaTime;
 
         transform.localEulerAngles = new Vector3(-rotationY, 0, 0);
     }
