@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour {
 
+    public int gateHealth;
+
 	// Use this for initialization
 	void Start () {
         // Lock the cursor to the center of the screen and hide it.
