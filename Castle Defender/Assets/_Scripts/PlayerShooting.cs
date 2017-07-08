@@ -25,20 +25,21 @@ public class PlayerShooting : MonoBehaviour {
 
     GunController GetHeldGun()
     {
-        // Get gun currently being held.
+        // Get player camera.
         for (i = 0; i < transform.childCount; i++)
         {
             if (transform.GetChild(i).gameObject.CompareTag("MainCamera"))
             {
                 mainCamera = transform.GetChild(i).gameObject;
+                break;
             }
         }
-
+        
+        // Get player gun.
         for (i = 0; i < mainCamera.transform.childCount; i++)
         {
             if (mainCamera.transform.GetChild(i).gameObject.CompareTag("Gun"))
             {
-                Debug.Log("Gun found");
                 return mainCamera.transform.GetChild(i).gameObject.GetComponent<GunController>();
             }
         }

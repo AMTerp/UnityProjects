@@ -13,18 +13,16 @@ public class LiftSensorController : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Body"))
+        if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Player entered");
             parentLift.lift = true;
         }
     }
 
     void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("Body"))
+        if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Player exitted");
             parentLift.lift = false;
         }
     }

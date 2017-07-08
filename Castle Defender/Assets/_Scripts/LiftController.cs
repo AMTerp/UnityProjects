@@ -28,13 +28,15 @@ public class LiftController : MonoBehaviour {
         }
 	}
 
+    // Elevate one step, scales properly with frame rate.
     public void elevate()
     {
         transform.position = new Vector3(transform.position.x, 
             Mathf.Clamp(transform.position.y + speed * Time.deltaTime, minHeight, maxHeight), 
             transform.position.z);
     }
-    
+
+    // Lower one step, scales properly with frame rate.
     public void lower()
     {
         transform.position = new Vector3(transform.position.x,
