@@ -13,7 +13,6 @@ public class Health : MonoBehaviour {
 
     public void TakeDamage(float damage)
     {
-        Debug.Log("Damage taken");
         health -= damage;
         CheckDead();
     }

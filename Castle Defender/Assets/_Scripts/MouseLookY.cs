@@ -6,7 +6,7 @@ public class MouseLookY : MonoBehaviour
 {
     public float sensitivityY;
 
-    private float rotationY;
+    internal float rotationY;
 
     // Use this for initialization
     void Start()

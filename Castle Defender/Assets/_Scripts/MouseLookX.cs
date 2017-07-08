@@ -6,7 +6,7 @@ public class MouseLookX : MonoBehaviour
 {
     public float sensitivityX;
 
-    private float rotationX;
+    internal float rotationX;
 
     // Use this for initialization
     void Start()
