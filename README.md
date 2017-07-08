@@ -1,4 +1,4 @@
-# Unity Projects
+﻿# Unity Projects
 This repository contains the scripts for Unity projects that I do for the purpose of practice or am otherwise happy to make public. These projects are my first experiences with C# and object-oriented programming.
 
 ### Roll a Ball [[Download]](https://mega.nz/#!KhQgxBgT!pvlEKbkilkBpdiaNdiZn6C2Vo2n5zqlramQ7QUkI-j4) (April 19, 2017)
@@ -39,7 +39,7 @@ A simple top down arena shooter. Wanted to make something involving cursor posit
 - Can pause!
 - Can exit!
 
-### Castle Defender [[Download]](https://mega.nz/#!r4pj2IDB!Y6Uv-pMCoCryV5eglWvaPruZXb3H8-EESBdOEeyufXk) (May 24, 2017) (Work in progress [On hold])
+### Castle Defender [[Download]](https://mega.nz/#!n9J3RKAD!81VfPsogSlsupTziqIikjPRQJJo9Hf1ywj42SGLqm6I) (July 8, 2017) (Work in progress)
 A first person pseudo-tower defender. Currently in its earliest stages. Planned features include:
 - Roaming atop the walls of your castle.
 - Defending from dozens (maybe 100s) of enemies charging your gates.
