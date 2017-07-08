@@ -8,7 +8,9 @@ public class GunController : MonoBehaviour {
     public float damage;
     public float recoilAmount;
     public float recoilYBias;
+    public AudioClip gunSoundClip;
 
+    private int recoilHash;
     private AudioSource gunShotSound;
     private Animation recoilAnimation;
 
@@ -16,22 +18,22 @@ public class GunController : MonoBehaviour {
 	void Start () {
         gunShotSound = GetComponent<AudioSource>();
         recoilAnimation = transform.GetChild(0).GetComponent<Animation>();
-        Debug.Log(recoilAnimation);
     }
 
     public void Fire()
     {
-        gunShotSound.Play();
+        gunShotSound.PlayOneShot(gunSoundClip, 1);
+        recoilAnimation.Play();
+        applyRecoil(recoilAmount, recoilYBias);
+
         RaycastHit hit;
         if (Physics.Raycast(transform.parent.position, transform.up, out hit))
         {
-            if (hit.collider.gameObject.transform.parent.CompareTag("Enemy"))
+            Debug.Log(hit.collider.gameObject);
+            if (hit.collider.gameObject.transform.parent && hit.collider.gameObject.transform.parent.CompareTag("Enemy"))
             {
                 Health health = hit.collider.gameObject.transform.parent.GetComponent<Health>();
                 health.TakeDamage(damage);
-
-                Debug.Log(recoilAnimation.Play());
-                applyRecoil(recoilAmount, recoilYBias);
             }
         }
     }
