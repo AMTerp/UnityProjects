@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerMover : MonoBehaviour {
 
     public float movementSpeed;
+    public float sprintMultiplier;
 
     private Rigidbody rb;
     private Vector3 moveX;
@@ -27,8 +28,15 @@ public class PlayerMover : MonoBehaviour {
         moveY = rb.transform.forward * Input.GetAxisRaw("Vertical");
 
         movement = moveX + moveY;
+        movement = movement.normalized * movementSpeed * Time.deltaTime;
 
-        // Going just straight is slower than going diagonal. Find fix.
-        rb.velocity = movement.normalized * movementSpeed * Time.deltaTime;
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            Debug.Log(string.Format("Sprint before: ({0}, {1}, {2})", movement.x, movement.y, movement.z));
+            movement *= sprintMultiplier;
+            Debug.Log(string.Format("Sprint after : ({0}, {1}, {2})", movement.x, movement.y, movement.z));
+        }
+
+        rb.velocity = movement;
     }
 }
