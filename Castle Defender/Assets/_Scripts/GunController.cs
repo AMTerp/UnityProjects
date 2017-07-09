@@ -40,9 +40,6 @@ public class GunController : MonoBehaviour {
 
     public void applyRecoil(float amount, float yBias)
     {
-        //Transform cameraY = transform.parent;
-        //Transform playerX = cameraY.parent;
-
         MouseLookX xRotation = transform.parent.parent.GetComponent<MouseLookX>();
         MouseLookY yRotation = transform.parent.GetComponent<MouseLookY>();
 
@@ -51,15 +48,11 @@ public class GunController : MonoBehaviour {
         {
             angle = 180 - angle;
         }
-        Debug.Log("Before bias angle: " + angle);
+
         angle = calcAngle(angle, yBias);
-        Debug.Log("After bias angle : " + angle);
 
         float xRecoil = Mathf.Cos(Mathf.Deg2Rad * angle) * amount;
         float yRecoil = Mathf.Sin(Mathf.Deg2Rad * angle) * amount;
-
-        //playerX.localEulerAngles = new Vector3(0, playerX.localEulerAngles.x + xRecoil, 0);
-        //cameraY.localEulerAngles = new Vector3(cameraY.localEulerAngles.y - yRecoil, 0, 0);
 
         xRotation.rotationX += xRecoil;
         yRotation.rotationY += yRecoil;
