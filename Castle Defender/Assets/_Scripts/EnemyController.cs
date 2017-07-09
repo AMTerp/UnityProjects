@@ -6,41 +6,84 @@ using UnityEngine.AI;
 public class EnemyController : MonoBehaviour {
 
     public float speed;
-    public float attackRate;
+    public float attackPause;
     public float attackDamage;
     public float attackRange;
+    public float checkpointRadius;
 
+    private int numCheckpoints = 2;
+    private int checkpoint;
     private float nextAttack;
     private Rigidbody rb;
     private GameObject gate;
     private Animation attackAnimation;
     private GateController gateController;
+    private Transform postGateCheckpoint1;
+    private Transform postGateCheckpoint2;
 
     // Use this for initialization
     void Start() {
         rb = GetComponent<Rigidbody>();
         gate = GameObject.FindWithTag("Gate");
+
+
+        postGateCheckpoint1 = gate.transform.GetChild(0);
+        postGateCheckpoint2 = gate.transform.GetChild(1);
         gateController = gate.GetComponent<GateController>();
         attackAnimation = transform.GetChild(0).GetComponent<Animation>();
         nextAttack = 0.0f;
+
+        checkpoint = (gate.transform.GetChild(numCheckpoints).gameObject.activeSelf) ? 0 : 1;
     }
 
     // Update is called once per frame
     void Update() {
-        if (Vector3.Distance(transform.position, gate.transform.position) <= attackRange)
+        // If gate is alive...
+        if (checkpoint == 0)
         {
-            rb.velocity = Vector3.zero;
-            attackGate();
+            if (gateController.health <= 0)
+            {
+                checkpoint++;
+            }
+            else if (Vector3.Distance(transform.position, gate.transform.position) > attackRange)
+            {
+                moveTowards(gate.transform);
+            }
+            else
+            {
+                rb.velocity = Vector3.zero;
+                attackGate();
+            }
         }
-        else
+        // If gate is recently dead...
+        else if (checkpoint == 1)
         {
-            moveTowardsGate();
+            if (Vector3.Distance(transform.position, postGateCheckpoint1.position) > checkpointRadius)
+            {
+                moveTowards(postGateCheckpoint1);
+            }
+            else
+            {
+                checkpoint++;
+            }
         }
-	}
+        // If gate is dead and have gone to first checkpoint, go through gate
+        else if (checkpoint == 2)
+        {
+            if (Vector3.Distance(transform.position, postGateCheckpoint2.position) > checkpointRadius)
+            {
+                moveTowards(postGateCheckpoint2);
+            }
+            else
+            {
+                checkpoint++;
+            }
+        }
+    }
 
-    void moveTowardsGate()
+    void moveTowards(Transform target)
     {
-        transform.LookAt(gate.transform);
+        transform.LookAt(target);
         rb.velocity = transform.forward * speed * Time.deltaTime;
         transform.localEulerAngles = new Vector3(0, transform.localEulerAngles.y, 0);
     }
@@ -54,7 +97,12 @@ public class EnemyController : MonoBehaviour {
 
             gateController.takeDamage(attackDamage);
 
-            nextAttack = Time.time + attackRate;
+            if (gateController.health <= 0)
+            {
+                gate.transform.GetChild(numCheckpoints).gameObject.SetActive(false);
+            }
+
+            nextAttack = Time.time + attackPause;
         }
 
         transform.localEulerAngles = new Vector3(0, transform.localEulerAngles.y, 0);

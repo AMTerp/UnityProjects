@@ -21,7 +21,7 @@ public class GateHealth : MonoBehaviour {
 
     public void updateHealthBar()
     {
-        currGateHealth = gateController.health;
+        currGateHealth = Mathf.Clamp(gateController.health, 0, initGateHealth);
         healthBar.transform.localScale = new Vector3(currGateHealth / initGateHealth, 
             healthBar.transform.localScale.y, 
             healthBar.transform.localScale.z);
