@@ -6,17 +6,20 @@ public class EnemyController : MonoBehaviour {
 
     public float speed;
     public float attackRate;
+    public float attackDamage;
 
     private bool atGate;
     private float nextAttack;
     private Rigidbody rb;
     private Transform gate;
     private Animation attackAnimation;
+    private GateController gateController;
 
 	// Use this for initialization
 	void Start () {
         rb = GetComponent<Rigidbody>();
         gate = GameObject.FindWithTag("Gate").transform;
+        gateController = gate.GetComponent<GateController>();
         attackAnimation = transform.GetChild(0).GetComponent<Animation>();
 
         atGate = false;
@@ -55,7 +58,11 @@ public class EnemyController : MonoBehaviour {
     {
         if (Time.time > nextAttack)
         {
+            transform.LookAt(gate);
             attackAnimation.Play();
+
+            gateController.takeDamage(attackDamage);
+
             nextAttack = Time.time + attackRate;
         }
 
