@@ -6,6 +6,7 @@ using UnityEngine;
 public class GunController : MonoBehaviour {
 
     public float damage;
+    public float firePause;
     public float recoilAmount;
     public float recoilYBias;
     public AudioClip gunSoundClip;

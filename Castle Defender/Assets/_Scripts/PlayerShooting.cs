@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class PlayerShooting : MonoBehaviour {
 
-    public float firePause;
 
     private int i;
     private float nextFire;
+    private float firePause;
     private GunController gunController;
     private GameObject mainCamera;
 
 	// Use this for initialization
 	void Start () {
         gunController = GetHeldGun();
-
+        firePause = gunController.firePause;
         nextFire = 0.0f;
 	}
 	

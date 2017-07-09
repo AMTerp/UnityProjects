@@ -73,8 +73,8 @@ public class GameController : MonoBehaviour {
         while (remainingEnemyWaveHp >= 100)
         {
             Debug.Log("Spawning enemy...");
-            spawnPosition = GenerateEnemySpawnPos();
             toSpawn = hazards[0];
+            spawnPosition = GenerateEnemySpawnPos(toSpawn.transform.localScale.y);
             Instantiate(toSpawn, spawnPosition, spawnRotation);
 
             remainingEnemyWaveHp -= 100;
@@ -87,9 +87,9 @@ public class GameController : MonoBehaviour {
         waveInProgress = false;
     }
 
-    Vector3 GenerateEnemySpawnPos()
+    Vector3 GenerateEnemySpawnPos(float y)
     {
-        return new Vector3(Random.Range(-xSpawnWidth / 2, xSpawnWidth / 2), 0.5f, zSpawnValue);
+        return new Vector3(Random.Range(-xSpawnWidth / 2, xSpawnWidth / 2), y, zSpawnValue);
     }
 
     bool AllEnemiesDead()
