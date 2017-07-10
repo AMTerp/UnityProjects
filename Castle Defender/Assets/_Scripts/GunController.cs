@@ -14,6 +14,7 @@ public class GunController : MonoBehaviour {
     public int initSpareAmmo;
     public float reloadTime;
     public AudioClip gunSoundClip;
+    public bool automatic;
 
     internal int currAmmoInClip;
     internal int currSpareAmmo;

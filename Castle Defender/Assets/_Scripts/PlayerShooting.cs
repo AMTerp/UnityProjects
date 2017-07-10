@@ -10,8 +10,8 @@ public class PlayerShooting : MonoBehaviour {
     private GunController gunController;
     private GameObject mainCamera;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         gunController = GetHeldGun();
 	}
 	
@@ -22,6 +22,8 @@ public class PlayerShooting : MonoBehaviour {
 
     GunController GetHeldGun()
     {
+        GunController gun;
+
         // Get player camera.
         for (i = 0; i < transform.childCount; i++)
         {
@@ -37,7 +39,8 @@ public class PlayerShooting : MonoBehaviour {
         {
             if (mainCamera.transform.GetChild(i).gameObject.CompareTag("Gun"))
             {
-                return mainCamera.transform.GetChild(i).gameObject.GetComponent<GunController>();
+                gun = mainCamera.transform.GetChild(i).gameObject.GetComponent<GunController>();
+                return gun;
             }
         }
 
@@ -47,7 +50,11 @@ public class PlayerShooting : MonoBehaviour {
 
     void CheckControls()
     {
-        if (Input.GetButton("Fire1") && Time.time > nextFire)
+        if (gunController.automatic && Input.GetButton("Fire1") && Time.time > nextFire)
+        {
+            Fire();
+        }
+        else if(!gunController.automatic && Input.GetButtonDown("Fire1") && Time.time > nextFire)
         {
             Fire();
         }
