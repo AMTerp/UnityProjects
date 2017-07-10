@@ -9,33 +9,56 @@ public class GunController : MonoBehaviour {
     public float firePause;
     public float recoilAmount;
     public float recoilYBias;
+    public int magazineSize;
+    public int maxSpareAmmo;
+    public int initSpareAmmo;
+    public float reloadTime;
     public AudioClip gunSoundClip;
 
-    private int recoilHash;
+    internal int currAmmoInClip;
+    internal int currSpareAmmo;
+    internal bool canFire;
+
+    private Animation animations;
+    private AmmoUIController ammoUI;
     private AudioSource gunShotSound;
-    private Animation recoilAnimation;
+    private int ammoBefore;
 
 	// Use this for initialization
 	void Start () {
         gunShotSound = GetComponent<AudioSource>();
-        recoilAnimation = transform.GetChild(0).GetComponent<Animation>();
+        animations = transform.GetChild(0).GetComponent<Animation>();
+        ammoUI = GameObject.FindWithTag("Ammo UI").GetComponent<AmmoUIController>();
+
+        currAmmoInClip = magazineSize;
+        currSpareAmmo = initSpareAmmo;
+        canFire = true;
+
+        ammoUI.setAmmoCount(currAmmoInClip, currSpareAmmo);
     }
 
     public void Fire()
     {
-        gunShotSound.PlayOneShot(gunSoundClip, 1);
-        recoilAnimation.Play();
-        applyRecoil(recoilAmount, recoilYBias);
-
-        RaycastHit hit;
-        if (Physics.Raycast(transform.parent.position, transform.up, out hit))
+        if (currAmmoInClip > 0)
         {
-            Debug.Log(hit.collider.gameObject);
-            if (hit.collider.gameObject.transform.parent && hit.collider.gameObject.transform.parent.CompareTag("Enemy"))
+            gunShotSound.PlayOneShot(gunSoundClip, 1);
+            animations.Play(gameObject.name + " Shot");
+            applyRecoil(recoilAmount, recoilYBias);
+
+            RaycastHit hit;
+            if (Physics.Raycast(transform.parent.position, transform.up, out hit))
             {
-                Health health = hit.collider.gameObject.transform.parent.GetComponent<Health>();
-                health.TakeDamage(damage);
+                Debug.Log(hit.collider.gameObject);
+                if (hit.collider.gameObject.transform.parent && hit.collider.gameObject.transform.parent.CompareTag("Enemy"))
+                {
+                    Health health = hit.collider.gameObject.transform.parent.GetComponent<Health>();
+                    health.TakeDamage(damage);
+                }
             }
+
+            currAmmoInClip -= 1;
+
+            ammoUI.setAmmoCount(currAmmoInClip, currSpareAmmo);
         }
     }
 
@@ -62,5 +85,17 @@ public class GunController : MonoBehaviour {
     public float calcAngle(float initAngle, float bias)
     {
         return ((90 * bias) + initAngle) / (bias + 1);
+    }
+
+    public IEnumerator Reload()
+    {
+        canFire = false;
+        ammoBefore = currAmmoInClip;
+        animations.Play(gameObject.name + " Reload");
+        yield return new WaitForSeconds(reloadTime);
+        currAmmoInClip = Mathf.Clamp(magazineSize, 0, currSpareAmmo + ammoBefore);
+        currSpareAmmo -= currAmmoInClip - ammoBefore;
+        ammoUI.setAmmoCount(currAmmoInClip, currSpareAmmo);
+        canFire = true;
     }
 }
