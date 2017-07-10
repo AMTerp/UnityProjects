@@ -5,48 +5,25 @@ using UnityEngine;
 public class PlayerShooting : MonoBehaviour {
 
 
-    private int i;
     private float nextFire;
-    private GunController gunController;
+    private int currWeaponSlotHeld;
     private GameObject mainCamera;
+    private GunController gunController;
+    private AmmoUIController ammoUI;
 
     // Use this for initialization
     void Start () {
-        gunController = GetHeldGun();
-	}
+        mainCamera = transform.Find("Main Camera").gameObject;
+        ammoUI = GameObject.FindWithTag("Ammo UI").GetComponent<AmmoUIController>();
+
+        currWeaponSlotHeld = 1;
+        SwapWeapons(1);
+    }
 	
 	// Update is called once per frame
 	void Update () {
         CheckControls();
 	}
-
-    GunController GetHeldGun()
-    {
-        GunController gun;
-
-        // Get player camera.
-        for (i = 0; i < transform.childCount; i++)
-        {
-            if (transform.GetChild(i).gameObject.CompareTag("MainCamera"))
-            {
-                mainCamera = transform.GetChild(i).gameObject;
-                break;
-            }
-        }
-        
-        // Get player gun.
-        for (i = 0; i < mainCamera.transform.childCount; i++)
-        {
-            if (mainCamera.transform.GetChild(i).gameObject.CompareTag("Gun"))
-            {
-                gun = mainCamera.transform.GetChild(i).gameObject.GetComponent<GunController>();
-                return gun;
-            }
-        }
-
-        Debug.Log("Could not find gunController");
-        return null;
-    }
 
     void CheckControls()
     {
@@ -54,14 +31,31 @@ public class PlayerShooting : MonoBehaviour {
         {
             Fire();
         }
-        else if(!gunController.automatic && Input.GetButtonDown("Fire1") && Time.time > nextFire)
+
+        if (!gunController.automatic && Input.GetButtonDown("Fire1") && Time.time > nextFire)
         {
             Fire();
         }
-        else if (Input.GetKeyDown(KeyCode.R) && gunController.currAmmoInClip < gunController.magazineSize &&
+
+        if (Input.GetKeyDown(KeyCode.R) && gunController.currAmmoInClip < gunController.magazineSize &&
             gunController.currSpareAmmo > 0 && gunController.canFire)
         {
             Reload();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            SwapWeapons(1);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            SwapWeapons(2);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            SwapWeapons(3);
         }
     }
 
@@ -75,5 +69,29 @@ public class PlayerShooting : MonoBehaviour {
     {
         StartCoroutine(gunController.Reload());
         nextFire = Time.time + gunController.reloadTime;
+    }
+
+    void SwapWeapons(int weaponSlot)
+    {
+        if (!mainCamera.transform.Find("Weapon Slot " + weaponSlot).GetChild(0))
+        {
+            // Must not have a gun in the specified weapon slot. Don't swap.
+            return;
+        }
+
+        // Set current held weapon model to inactive.
+        mainCamera.transform.Find("Weapon Slot " + currWeaponSlotHeld).GetChild(0).GetChild(0).gameObject.SetActive(false);
+
+        Transform newWeapon = mainCamera.transform.Find("Weapon Slot " + weaponSlot).GetChild(0);
+
+        // Set the new weapon model to active.
+        newWeapon.GetChild(0).gameObject.SetActive(true);
+
+        // Get reference to gunController for new weapon.
+        gunController = newWeapon.GetComponent<GunController>();
+        currWeaponSlotHeld = weaponSlot;
+
+        // Update Ammo UI.
+        ammoUI.setAmmoCount(gunController.currAmmoInClip, gunController.currSpareAmmo); // AmmoUI init bug here.
     }
 }

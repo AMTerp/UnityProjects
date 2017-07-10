@@ -19,8 +19,8 @@ public class GunController : MonoBehaviour {
     internal int currAmmoInClip;
     internal int currSpareAmmo;
     internal bool canFire;
+    internal Animation animations;
 
-    private Animation animations;
     private AmmoUIController ammoUI;
     private AudioSource gunShotSound;
     private int ammoBefore;
@@ -34,8 +34,6 @@ public class GunController : MonoBehaviour {
         currAmmoInClip = magazineSize;
         currSpareAmmo = initSpareAmmo;
         canFire = true;
-
-        ammoUI.setAmmoCount(currAmmoInClip, currSpareAmmo);
     }
 
     public void Fire()
@@ -65,8 +63,8 @@ public class GunController : MonoBehaviour {
 
     public void applyRecoil(float amount, float yBias)
     {
-        MouseLookX xRotation = transform.parent.parent.GetComponent<MouseLookX>();
-        MouseLookY yRotation = transform.parent.GetComponent<MouseLookY>();
+        MouseLookX xRotation = transform.parent.parent.parent.GetComponent<MouseLookX>();
+        MouseLookY yRotation = transform.parent.parent.GetComponent<MouseLookY>();
 
         float angle = Random.Range(15, 46);
         if (Random.Range(0, 2) == 0)
