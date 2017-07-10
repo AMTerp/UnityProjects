@@ -11,8 +11,10 @@ public class GameController : MonoBehaviour {
     public float enemyWaveHpIncrease;
     public float waveLength;
     public float waveIntermission;
-
     public GameObject[] hazards;
+
+    internal bool uiDisableMouseLook;
+    internal bool uiDisableMouseClick;
 
     private bool waveInProgress;
     private float currEnemyWaveHp;
@@ -25,6 +27,8 @@ public class GameController : MonoBehaviour {
         currEnemyWaveHp = initEnemyWaveHp;
 
         waveInProgress = true;
+        uiDisableMouseLook = false;
+        uiDisableMouseLook = false;
 
         StartCoroutine(SpawnWave());
         StartCoroutine(WaveController());

@@ -8,16 +8,21 @@ public class MouseLookX : MonoBehaviour
 
     internal float rotationX;
 
+    private GameController gameController;
+
     // Use this for initialization
     void Start()
     {
-
+        gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        rotationX += Input.GetAxis("Mouse X") * sensitivityX * Time.deltaTime;
+        if (!gameController.uiDisableMouseLook)
+        {
+            rotationX += Input.GetAxis("Mouse X") * sensitivityX * Time.deltaTime;
+        }
 
         transform.localEulerAngles = new Vector3(0, rotationX, 0);
     }

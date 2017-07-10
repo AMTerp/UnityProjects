@@ -9,12 +9,14 @@ public class PlayerShooting : MonoBehaviour {
     private int currWeaponSlotHeld;
     private GameObject mainCamera;
     private GunController gunController;
+    private GameController gameController;
     private AmmoUIController ammoUI;
 
     // Use this for initialization
     void Start () {
         mainCamera = transform.Find("Main Camera").gameObject;
         ammoUI = GameObject.FindWithTag("Ammo UI").GetComponent<AmmoUIController>();
+        gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
 
         currWeaponSlotHeld = 1;
         SwapWeapons(1);
@@ -27,15 +29,19 @@ public class PlayerShooting : MonoBehaviour {
 
     void CheckControls()
     {
-        if (gunController.automatic && Input.GetButton("Fire1") && Time.time > nextFire)
+        if (!gameController.uiDisableMouseClick)
         {
-            Fire();
+            if (gunController.automatic && Input.GetButton("Fire1") && Time.time > nextFire)
+            {
+                Fire();
+            }
+
+            if (!gunController.automatic && Input.GetButtonDown("Fire1") && Time.time > nextFire)
+            {
+                Fire();
+            }
         }
 
-        if (!gunController.automatic && Input.GetButtonDown("Fire1") && Time.time > nextFire)
-        {
-            Fire();
-        }
 
         if (Input.GetKeyDown(KeyCode.R) && gunController.currAmmoInClip < gunController.magazineSize &&
             gunController.currSpareAmmo > 0 && gunController.canFire)
