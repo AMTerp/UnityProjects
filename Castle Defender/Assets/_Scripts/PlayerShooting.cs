@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerShooting : MonoBehaviour {
 
-
     private float nextFire;
     private int currWeaponSlotHeld;
     private GameObject mainCamera;
@@ -19,7 +18,9 @@ public class PlayerShooting : MonoBehaviour {
         gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
 
         currWeaponSlotHeld = 1;
-        SwapWeapons(1);
+        gunController = mainCamera.transform.Find("Weapon Slot " + currWeaponSlotHeld).GetChild(0).GetComponent<GunController>();
+
+        ammoUI.setAmmoCount(gunController.currAmmoInClip, gunController.currSpareAmmo); // AmmoUI init bug here.
     }
 	
 	// Update is called once per frame
@@ -31,17 +32,22 @@ public class PlayerShooting : MonoBehaviour {
     {
         if (!gameController.uiDisableMouseClick)
         {
-            if (gunController.automatic && Input.GetButton("Fire1") && Time.time > nextFire)
+            if (gunController.automatic && Input.GetMouseButton(0) && Time.time > nextFire)
             {
                 Fire();
             }
 
-            if (!gunController.automatic && Input.GetButtonDown("Fire1") && Time.time > nextFire)
+            if (!gunController.automatic && Input.GetMouseButtonDown(0) && Time.time > nextFire)
             {
                 Fire();
             }
         }
 
+        if (Input.GetMouseButtonDown(1))
+        {
+            Debug.Log("Right click detected.");
+            StartCoroutine(gunController.Zoom());
+        }
 
         if (Input.GetKeyDown(KeyCode.R) && gunController.currAmmoInClip < gunController.magazineSize &&
             gunController.currSpareAmmo > 0 && gunController.canFire)
@@ -83,6 +89,12 @@ public class PlayerShooting : MonoBehaviour {
         {
             // Must not have a gun in the specified weapon slot. Don't swap.
             return;
+        }
+
+        if (gunController.zoomedIn)
+        {
+            Debug.Log("Zoomed in and weapon swap");
+            StartCoroutine(gunController.Zoom());
         }
 
         // Set current held weapon model to inactive.

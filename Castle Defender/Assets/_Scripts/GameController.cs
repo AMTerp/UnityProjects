@@ -57,7 +57,6 @@ public class GameController : MonoBehaviour {
             }
             else
             {
-                Debug.Log("Wave over, intermission...");
                 yield return new WaitForSeconds(waveIntermission);
                 waveInProgress = true;
                 StartCoroutine(SpawnWave());
@@ -76,7 +75,6 @@ public class GameController : MonoBehaviour {
 
         while (remainingEnemyWaveHp >= 100)
         {
-            Debug.Log("Spawning enemy...");
             toSpawn = hazards[0];
             spawnPosition = GenerateEnemySpawnPos(toSpawn.transform.localScale.y);
             Instantiate(toSpawn, spawnPosition, spawnRotation);

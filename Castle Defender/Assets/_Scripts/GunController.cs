@@ -13,27 +13,35 @@ public class GunController : MonoBehaviour {
     public int maxSpareAmmo;
     public int initSpareAmmo;
     public float reloadTime;
-    public AudioClip gunSoundClip;
     public bool automatic;
+    public float zoomTime;
+    public float zoomFOV;
+    public AudioClip gunSoundClip;
 
     internal int currAmmoInClip;
     internal int currSpareAmmo;
     internal bool canFire;
     internal Animation animations;
+    internal bool zoomedIn;
 
+    private int ammoBefore;
+    private Camera mainCamera;
     private AmmoUIController ammoUI;
     private AudioSource gunShotSound;
-    private int ammoBefore;
+    private float initFOV;
 
 	// Use this for initialization
 	void Start () {
         gunShotSound = GetComponent<AudioSource>();
         animations = transform.GetChild(0).GetComponent<Animation>();
         ammoUI = GameObject.FindWithTag("Ammo UI").GetComponent<AmmoUIController>();
+        mainCamera = transform.parent.parent.GetComponent<Camera>();
 
         currAmmoInClip = magazineSize;
         currSpareAmmo = initSpareAmmo;
         canFire = true;
+        zoomedIn = false;
+        initFOV = mainCamera.fieldOfView;
     }
 
     public void Fire()
@@ -96,5 +104,33 @@ public class GunController : MonoBehaviour {
         currSpareAmmo -= currAmmoInClip - ammoBefore;
         ammoUI.setAmmoCount(currAmmoInClip, currSpareAmmo);
         canFire = true;
+    }
+
+    public IEnumerator Zoom()
+    {
+        Debug.Log("Zoom called");
+        float currTime = 0.0f;
+        if (!zoomedIn && canFire)
+        {
+            while (mainCamera.fieldOfView > zoomFOV)
+            {
+                mainCamera.fieldOfView = Mathf.Lerp(initFOV, zoomFOV, currTime / zoomTime);
+                yield return new WaitForEndOfFrame();
+                currTime += Time.deltaTime;
+            }
+
+            zoomedIn = true;
+        }
+        else if (zoomedIn)
+        {
+            while (mainCamera.fieldOfView < initFOV)
+            {
+                mainCamera.fieldOfView = Mathf.Lerp(zoomFOV, initFOV, currTime / zoomTime);
+                yield return new WaitForEndOfFrame();
+                currTime += Time.deltaTime;
+            }
+
+            zoomedIn = false;
+        }
     }
 }
