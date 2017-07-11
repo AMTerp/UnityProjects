@@ -39,7 +39,7 @@ A simple top down arena shooter. Wanted to make something involving cursor posit
 - Can pause!
 - Can exit!
 
-### Castle Defender [[Download]](https://mega.nz/#!jtRSVQ7Y!bzyj-fjVOgdqT3xoLHrU8cAq8iQyy-Eep09hxe7hu4U) (July 10, 2017) (Work in progress)
+### Castle Defender [[Download]](https://mega.nz/#!LpYmUIDI!ju3wq0BuTgEQDSNg6h1xN67QfCpLtdjTJpuG0Ad7bEU) (July 11, 2017) (Work in progress)
 A first person pseudo-tower defender. Currently in its earliest stages. Planned features include:
 - Roaming atop the walls of your castle.
 - Defending from dozens (maybe 100s) of enemies charging your gates.
@@ -50,13 +50,14 @@ A first person pseudo-tower defender. Currently in its earliest stages. Planned 
 Right now includes:
 - Walk around in first-person.
 - Point and shoot at moving enemies.
-- Firing animation and recoil.
+- Firing animation, recoil, zooming with right click.
 - Working lift to get back onto castle walls if fallen off.
 - Simple castle model.
 - Defend castle gate and houses inside walls from waves of spawning enemies.
 - Gradual difficulty increase.
 - Ammo system.
 - A shop to purchase ammunition and guns from.
+- Press '3' to swap to a sniper.
 - Press "Escape" to pause and read controls.
 
 For a detailed plan of features, see Castle Defender/Assets/To do.xlsx/.
