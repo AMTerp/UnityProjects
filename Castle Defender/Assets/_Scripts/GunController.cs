@@ -14,6 +14,7 @@ public class GunController : MonoBehaviour {
     public int initSpareAmmo;
     public float reloadTime;
     public bool automatic;
+    public bool chamberBullet;
     public float zoomTime;
     public float zoomFOV;
     public AudioClip gunSoundClip;
@@ -27,6 +28,7 @@ public class GunController : MonoBehaviour {
     private int ammoBefore;
     private Camera mainCamera;
     private AmmoUIController ammoUI;
+    private BulletTimer bulletTimerUI;
     private AudioSource gunShotSound;
     private float initFOV;
 
@@ -36,6 +38,7 @@ public class GunController : MonoBehaviour {
         animations = transform.GetChild(0).GetComponent<Animation>();
         ammoUI = GameObject.FindWithTag("Ammo UI").GetComponent<AmmoUIController>();
         mainCamera = transform.parent.parent.GetComponent<Camera>();
+        bulletTimerUI = GameObject.FindWithTag("Bullet Timer").GetComponent<BulletTimer>();
 
         currAmmoInClip = magazineSize;
         currSpareAmmo = initSpareAmmo;
@@ -48,9 +51,15 @@ public class GunController : MonoBehaviour {
     {
         if (currAmmoInClip > 0)
         {
+            applyRecoil(recoilAmount, recoilYBias);
             gunShotSound.PlayOneShot(gunSoundClip, 1);
             animations.Play(gameObject.name + " Shot");
-            applyRecoil(recoilAmount, recoilYBias);
+            if (chamberBullet)
+            {
+                StartCoroutine(ChamberBullet());
+            }
+
+            StartCoroutine(bulletTimerUI.RunTimer(firePause));
 
             RaycastHit hit;
             if (Physics.Raycast(transform.parent.position, transform.up, out hit))
@@ -92,6 +101,20 @@ public class GunController : MonoBehaviour {
     public float calcAngle(float initAngle, float bias)
     {
         return ((90 * bias) + initAngle) / (bias + 1);
+    }
+
+    IEnumerator ChamberBullet()
+    {
+        bool played = false;
+        while (!played)
+        {
+            if (!animations.isPlaying)
+            {
+                animations.Play(gameObject.name + " Chamber Bullet");
+                played = true;
+            }
+            yield return new WaitForSeconds(0.02f);
+        }
     }
 
     public IEnumerator Reload()
