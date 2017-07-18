@@ -32,9 +32,7 @@ public class PlayerMover : MonoBehaviour {
 
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            Debug.Log(string.Format("Sprint before: ({0}, {1}, {2})", movement.x, movement.y, movement.z));
             movement *= sprintMultiplier;
-            Debug.Log(string.Format("Sprint after : ({0}, {1}, {2})", movement.x, movement.y, movement.z));
         }
 
         rb.velocity = movement;
