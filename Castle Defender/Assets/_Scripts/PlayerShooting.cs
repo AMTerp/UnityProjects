@@ -93,11 +93,12 @@ public class PlayerShooting : MonoBehaviour {
 
         if (gunController.zoomedIn)
         {
-            Debug.Log("Zoomed in and weapon swap");
             StartCoroutine(gunController.Zoom());
         }
 
         // Set current held weapon model to inactive.
+        gunController.canFire = true; // Indicates to current gunController to cancel reload.
+        nextFire = 0.0f; // Allow for immediate shooting.
         mainCamera.transform.Find("Weapon Slot " + currWeaponSlotHeld).GetChild(0).GetChild(0).gameObject.SetActive(false);
 
         Transform newWeapon = mainCamera.transform.Find("Weapon Slot " + weaponSlot).GetChild(0);
@@ -105,8 +106,9 @@ public class PlayerShooting : MonoBehaviour {
         // Set the new weapon model to active.
         newWeapon.GetChild(0).gameObject.SetActive(true);
 
-        // Get reference to gunController for new weapon.
+        // Get reference to gunController for new weapon and reset transform.
         gunController = newWeapon.GetComponent<GunController>();
+        gunController.resetTransform();
         currWeaponSlotHeld = weaponSlot;
 
         // Update Ammo UI.

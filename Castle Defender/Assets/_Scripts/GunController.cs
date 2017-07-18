@@ -24,6 +24,9 @@ public class GunController : MonoBehaviour {
     internal bool canFire;
     internal Animation animations;
     internal bool zoomedIn;
+    private Vector3 idlePosition;
+    private Vector3 idleRotation;
+    private Vector3 idleScale;
 
     private int ammoBefore;
     private Camera mainCamera;
@@ -39,6 +42,10 @@ public class GunController : MonoBehaviour {
         ammoUI = GameObject.FindWithTag("Ammo UI").GetComponent<AmmoUIController>();
         mainCamera = transform.parent.parent.GetComponent<Camera>();
         bulletTimerUI = GameObject.FindWithTag("Bullet Timer").GetComponent<BulletTimer>();
+
+        idlePosition = transform.GetChild(0).localPosition;
+        idleRotation = transform.GetChild(0).localEulerAngles;
+        idleScale = transform.GetChild(0).localScale;
 
         currAmmoInClip = magazineSize;
         currSpareAmmo = initSpareAmmo;
@@ -123,7 +130,7 @@ public class GunController : MonoBehaviour {
                 animations.Play(gameObject.name + " Chamber Bullet");
                 played = true;
             }
-            yield return new WaitForSeconds(0.02f);
+            yield return new WaitForEndOfFrame();
         }
     }
 
@@ -133,11 +140,28 @@ public class GunController : MonoBehaviour {
         ammoBefore = currAmmoInClip;
         animations.Play(gameObject.name + " Reload");
         yield return new WaitForSeconds(reloadTime);
+        if (canFire)
+        {
+            // If canFire is true, then we must have swapped weapons mid-reload. Cancel the rest of the reload.
+            Debug.Log("BREAK RELOAD");
+            yield break;
+        }
+
         currAmmoInClip = Mathf.Clamp(magazineSize, 0, currSpareAmmo + ammoBefore);
         currSpareAmmo -= currAmmoInClip - ammoBefore;
         ammoUI.setAmmoCount(currAmmoInClip, currSpareAmmo);
         StartCoroutine(bulletTimerUI.RunTimer(firePause, "full"));
         canFire = true;
+    }
+
+    public void resetTransform()
+    {
+        transform.GetChild(0).localPosition = idlePosition;
+        transform.GetChild(0).localEulerAngles = idleRotation;
+        transform.GetChild(0).localScale = idleScale;
+        Debug.Log("Setting lPos: " + idlePosition);
+        Debug.Log("Setting lRot: " + idleRotation);
+        Debug.Log("Setting lSca: " + idleScale);
     }
 
     public IEnumerator Zoom()
