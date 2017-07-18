@@ -37,6 +37,5 @@ public class BuyWeaponButton : MonoBehaviour {
         GameObject newWeapon = Instantiate(weapon, mainCamera.Find("Weapon Slot " + weaponSlot).transform);
         newWeapon.transform.GetChild(0).gameObject.SetActive(false);
         newWeapon.name = weapon.name;
-        //newWeapon.transform.SetParent(mainCamera.Find("Weapon Slot " + weaponSlot));
     }
 }

@@ -54,17 +54,27 @@ public class GunController : MonoBehaviour {
             applyRecoil(recoilAmount, recoilYBias);
             gunShotSound.PlayOneShot(gunSoundClip, 1);
             animations.Play(gameObject.name + " Shot");
-            if (chamberBullet)
+
+            // If last bullet is being fired, don't do chamber bullet animation nor play .
+            if (currAmmoInClip != 1)
             {
-                StartCoroutine(ChamberBullet());
+                if (chamberBullet)
+                {
+                    StartCoroutine(ChamberBullet());
+                }
+
+                StartCoroutine(bulletTimerUI.RunTimer(firePause));
+            }
+            else
+            {
+                StartCoroutine(bulletTimerUI.RunTimer(firePause, "empty"));
             }
 
-            StartCoroutine(bulletTimerUI.RunTimer(firePause));
 
             RaycastHit hit;
             if (Physics.Raycast(transform.parent.position, transform.up, out hit))
             {
-                Debug.Log(hit.collider.gameObject);
+                Debug.Log("Target hit: " + hit.collider.gameObject);
                 if (hit.collider.gameObject.transform.parent && hit.collider.gameObject.transform.parent.CompareTag("Enemy"))
                 {
                     Health health = hit.collider.gameObject.transform.parent.GetComponent<Health>();
@@ -126,6 +136,7 @@ public class GunController : MonoBehaviour {
         currAmmoInClip = Mathf.Clamp(magazineSize, 0, currSpareAmmo + ammoBefore);
         currSpareAmmo -= currAmmoInClip - ammoBefore;
         ammoUI.setAmmoCount(currAmmoInClip, currSpareAmmo);
+        StartCoroutine(bulletTimerUI.RunTimer(firePause, "full"));
         canFire = true;
     }
 

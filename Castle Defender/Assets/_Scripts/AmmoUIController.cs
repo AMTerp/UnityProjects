@@ -7,10 +7,12 @@ public class AmmoUIController : MonoBehaviour {
 
     private Text ammoText;
 
-	// Use this for initialization
-	void Start () {
+    // Need to get reference to text component of the UI before the text is set in the 'Start' function 
+    // of PlayerShooting.
+    void Awake()
+    {
         ammoText = GetComponent<Text>();
-	}
+    }
 	
 	public void setAmmoCount(int ammoInClip, int spareAmmo)
     {

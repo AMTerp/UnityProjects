@@ -34,7 +34,12 @@ public class BuyAmmoButton : MonoBehaviour {
                 GunController gunController = gunSlot.GetChild(0).gameObject.GetComponent<GunController>();
                 int ammoBefore = gunController.currSpareAmmo;
                 gunController.currSpareAmmo = Mathf.Clamp(gunController.currSpareAmmo + ammoAmount, 0, gunController.maxSpareAmmo);
-                ammoUI.setAmmoCount(gunController.currAmmoInClip, gunController.currSpareAmmo);
+
+                // If the player is currently holding the gun, update the ammo count on the UI.
+                if (gunSlot.GetChild(0).GetChild(0).gameObject.activeSelf)
+                {
+                    ammoUI.setAmmoCount(gunController.currAmmoInClip, gunController.currSpareAmmo);
+                }
                 // Now, using ammoBefore, determine how much to charge the player.
             }
         }

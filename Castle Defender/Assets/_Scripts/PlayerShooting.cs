@@ -22,9 +22,9 @@ public class PlayerShooting : MonoBehaviour {
 
         ammoUI.setAmmoCount(gunController.currAmmoInClip, gunController.currSpareAmmo); // AmmoUI init bug here.
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update () {
         CheckControls();
 	}
 
