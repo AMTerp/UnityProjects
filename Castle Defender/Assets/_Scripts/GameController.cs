@@ -13,18 +13,25 @@ public class GameController : MonoBehaviour {
     public float waveIntermission;
     public GameObject[] hazards;
 
+    internal int money;
     internal bool uiDisableMouseLook;
     internal bool uiDisableMouseClick;
 
     private bool waveInProgress;
     private float currEnemyWaveHp;
+    private MoneyController moneyController;
 
     // Use this for initialization
     void Start () {
         // Lock the cursor to the center of the screen and hide it.
         Cursor.lockState = CursorLockMode.Locked;
 
+        moneyController = GameObject.FindWithTag("Money UI").GetComponent<MoneyController>();
+
         currEnemyWaveHp = initEnemyWaveHp;
+
+        money = 800;
+        moneyController.setMoneyText(money);
 
         waveInProgress = true;
         uiDisableMouseLook = false;

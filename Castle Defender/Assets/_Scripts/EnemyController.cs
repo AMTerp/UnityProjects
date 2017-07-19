@@ -9,6 +9,7 @@ public class EnemyController : MonoBehaviour {
     public float attackPause;
     public float attackDamage;
     public float attackRange;
+    public int moneyReward;
     public float checkpointRadius;
 
     private int numCheckpoints = 2;
