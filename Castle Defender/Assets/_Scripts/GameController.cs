@@ -9,6 +9,8 @@ public class GameController : MonoBehaviour {
     public float xSpawnWidth;
     public float initEnemyWaveHp;
     public float enemyWaveHpIncrease;
+    public float waveRewardPercent;
+    public float waveRewardGoldPerHP;
     public float waveLength;
     public float waveIntermission;
     public GameObject[] hazards;
@@ -19,6 +21,8 @@ public class GameController : MonoBehaviour {
 
     private bool waveInProgress;
     private float currEnemyWaveHp;
+    private int waveNum;
+    private WaveCounterUI waveCounterUI;
     private MoneyController moneyController;
 
     // Use this for initialization
@@ -26,12 +30,15 @@ public class GameController : MonoBehaviour {
         // Lock the cursor to the center of the screen and hide it.
         Cursor.lockState = CursorLockMode.Locked;
 
+        waveCounterUI = GameObject.FindWithTag("Wave Counter UI").GetComponent<WaveCounterUI>();
         moneyController = GameObject.FindWithTag("Money UI").GetComponent<MoneyController>();
 
         currEnemyWaveHp = initEnemyWaveHp;
 
         money = 800;
         moneyController.setMoneyText(money);
+        waveNum = 1;
+        waveCounterUI.setWaveCounter(waveNum);
 
         waveInProgress = true;
         uiDisableMouseLook = false;
@@ -60,11 +67,13 @@ public class GameController : MonoBehaviour {
         {
             if (waveInProgress || !AllEnemiesDead())
             {
-                yield return new WaitForSeconds(0.02f);
+                yield return new WaitForEndOfFrame();
             }
             else
             {
+                moneyController.changeMoneyText(GetWaveReward());
                 yield return new WaitForSeconds(waveIntermission);
+                waveCounterUI.setWaveCounter(++waveNum);
                 waveInProgress = true;
                 StartCoroutine(SpawnWave());
             }
@@ -104,5 +113,10 @@ public class GameController : MonoBehaviour {
     bool AllEnemiesDead()
     {
         return !((bool) GameObject.FindWithTag("Enemy"));
+    }
+
+    int GetWaveReward()
+    {
+        return (int) (initEnemyWaveHp * Mathf.Pow(enemyWaveHpIncrease, (waveNum - 1)) * waveRewardGoldPerHP * waveRewardPercent);
     }
 }
