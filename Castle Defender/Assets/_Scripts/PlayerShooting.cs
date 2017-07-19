@@ -10,17 +10,19 @@ public class PlayerShooting : MonoBehaviour {
     private GunController gunController;
     private GameController gameController;
     private AmmoUIController ammoUI;
+    private BulletTimer bulletTimerUI;
 
     // Use this for initialization
     void Start () {
         mainCamera = transform.Find("Main Camera").gameObject;
         ammoUI = GameObject.FindWithTag("Ammo UI").GetComponent<AmmoUIController>();
         gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
+        bulletTimerUI = GameObject.FindWithTag("Bullet Timer").GetComponent<BulletTimer>();
 
         currWeaponSlotHeld = 1;
         gunController = mainCamera.transform.Find("Weapon Slot " + currWeaponSlotHeld).GetChild(0).GetComponent<GunController>();
 
-        ammoUI.setAmmoCount(gunController.currAmmoInClip, gunController.currSpareAmmo); // AmmoUI init bug here.
+        ammoUI.setAmmoCount(gunController.currAmmoInClip, gunController.currSpareAmmo);
     }
 
     // Update is called once per frame
@@ -32,14 +34,14 @@ public class PlayerShooting : MonoBehaviour {
     {
         if (!gameController.uiDisableMouseClick)
         {
-            if (gunController.automatic && Input.GetMouseButton(0) && Time.time > nextFire)
+            if (gunController.automatic && Input.GetMouseButton(0) && Time.time > gunController.nextFire)
             {
-                Fire();
+                gunController.Fire();
             }
 
-            if (!gunController.automatic && Input.GetMouseButtonDown(0) && Time.time > nextFire)
+            if (!gunController.automatic && Input.GetMouseButtonDown(0) && Time.time > gunController.nextFire)
             {
-                Fire();
+                gunController.Fire();
             }
         }
 
@@ -71,12 +73,6 @@ public class PlayerShooting : MonoBehaviour {
         }
     }
 
-    void Fire()
-    {
-        gunController.Fire();
-        nextFire = Time.time + gunController.firePause;
-    }
-
     void Reload()
     {
         StartCoroutine(gunController.Reload());
@@ -98,6 +94,7 @@ public class PlayerShooting : MonoBehaviour {
 
         // Set current held weapon model to inactive.
         gunController.canFire = true; // Indicates to current gunController to cancel reload.
+        gunController.animations.Stop(); // Stop any animations, particularly bullet chambering animations.
         nextFire = 0.0f; // Allow for immediate shooting.
         mainCamera.transform.Find("Weapon Slot " + currWeaponSlotHeld).GetChild(0).GetChild(0).gameObject.SetActive(false);
 
@@ -111,7 +108,15 @@ public class PlayerShooting : MonoBehaviour {
         gunController.resetTransform();
         currWeaponSlotHeld = weaponSlot;
 
-        // Update Ammo UI.
-        ammoUI.setAmmoCount(gunController.currAmmoInClip, gunController.currSpareAmmo); // AmmoUI init bug here.
+        // Update UI.
+        ammoUI.setAmmoCount(gunController.currAmmoInClip, gunController.currSpareAmmo);
+        if (gunController.currAmmoInClip > 0)
+        {
+            StartCoroutine(bulletTimerUI.RunTimer(0.0f, "full"));
+        }
+        else
+        {
+            StartCoroutine(bulletTimerUI.RunTimer(0.0f, "empty"));
+        }
     }
 }

@@ -22,6 +22,7 @@ public class GunController : MonoBehaviour {
     internal int currAmmoInClip;
     internal int currSpareAmmo;
     internal bool canFire;
+    internal float nextFire;
     internal Animation animations;
     internal bool zoomedIn;
     private Vector3 idlePosition;
@@ -52,6 +53,7 @@ public class GunController : MonoBehaviour {
         canFire = true;
         zoomedIn = false;
         initFOV = mainCamera.fieldOfView;
+        nextFire = 0.0f;
     }
 
     public void Fire()
@@ -90,6 +92,7 @@ public class GunController : MonoBehaviour {
             }
 
             currAmmoInClip -= 1;
+            nextFire = Time.time + firePause;
 
             ammoUI.setAmmoCount(currAmmoInClip, currSpareAmmo);
         }
@@ -143,7 +146,6 @@ public class GunController : MonoBehaviour {
         if (canFire)
         {
             // If canFire is true, then we must have swapped weapons mid-reload. Cancel the rest of the reload.
-            Debug.Log("BREAK RELOAD");
             yield break;
         }
 
@@ -159,14 +161,10 @@ public class GunController : MonoBehaviour {
         transform.GetChild(0).localPosition = idlePosition;
         transform.GetChild(0).localEulerAngles = idleRotation;
         transform.GetChild(0).localScale = idleScale;
-        Debug.Log("Setting lPos: " + idlePosition);
-        Debug.Log("Setting lRot: " + idleRotation);
-        Debug.Log("Setting lSca: " + idleScale);
     }
 
     public IEnumerator Zoom()
     {
-        Debug.Log("Zoom called");
         float currTime = 0.0f;
         if (!zoomedIn && canFire)
         {
