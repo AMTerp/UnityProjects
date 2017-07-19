@@ -61,15 +61,17 @@ public class PlayerShooting : MonoBehaviour {
         {
             SwapWeapons(1);
         }
-
-        if (Input.GetKeyDown(KeyCode.Alpha2))
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             SwapWeapons(2);
         }
-
-        if (Input.GetKeyDown(KeyCode.Alpha3))
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             SwapWeapons(3);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            SwapWeapons(4);
         }
     }
 

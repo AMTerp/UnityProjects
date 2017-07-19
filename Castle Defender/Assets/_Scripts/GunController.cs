@@ -13,11 +13,13 @@ public class GunController : MonoBehaviour {
     public int maxSpareAmmo;
     public int initSpareAmmo;
     public float reloadTime;
-    public bool automatic;
-    public bool chamberBullet;
     public float zoomTime;
     public float zoomFOV;
+    public bool automatic;
+    public bool chamberBullet;
+    public string ammoType;
     public AudioClip gunSoundClip;
+    public GameObject objectToSpawn;
 
     internal int currAmmoInClip;
     internal int currSpareAmmo;
@@ -83,11 +85,20 @@ public class GunController : MonoBehaviour {
             RaycastHit hit;
             if (Physics.Raycast(transform.parent.position, transform.up, out hit))
             {
-                Debug.Log("Target hit: " + hit.collider.gameObject);
-                if (hit.collider.gameObject.transform.parent && hit.collider.gameObject.transform.parent.CompareTag("Enemy"))
+                if (ammoType.Equals("bullet"))
                 {
-                    Health health = hit.collider.gameObject.transform.parent.GetComponent<Health>();
-                    health.TakeDamage(damage);
+                    if (hit.collider.gameObject.transform.parent && hit.collider.gameObject.transform.parent.CompareTag("Enemy"))
+                    {
+                        Health health = hit.collider.gameObject.transform.parent.GetComponent<Health>();
+                        health.TakeDamage(damage);
+                    }
+                }
+                else if (ammoType.Equals("object"))
+                {
+                    if (hit.collider.gameObject.CompareTag("Ground"))
+                    {
+                        Instantiate(objectToSpawn, hit.point, Quaternion.identity);
+                    }
                 }
             }
 
