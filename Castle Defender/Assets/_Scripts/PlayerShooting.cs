@@ -47,7 +47,6 @@ public class PlayerShooting : MonoBehaviour {
 
         if (Input.GetMouseButtonDown(1))
         {
-            Debug.Log("Right click detected.");
             StartCoroutine(gunController.Zoom());
         }
 

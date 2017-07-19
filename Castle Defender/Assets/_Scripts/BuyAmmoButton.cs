@@ -10,6 +10,7 @@ public class BuyAmmoButton : MonoBehaviour {
     public string gunName;
 
     private Button button;
+    private Text buttonText;
     private AmmoUIController ammoUI;
     private MoneyController moneyController;
     private GameController gameController;
@@ -17,9 +18,12 @@ public class BuyAmmoButton : MonoBehaviour {
     // Use this for initialization
     void Start () {
         button = gameObject.GetComponent<Button>();
+        buttonText = transform.GetChild(0).gameObject.GetComponent<Text>();
         ammoUI = GameObject.FindWithTag("Ammo UI").GetComponent<AmmoUIController>();
         moneyController = GameObject.FindWithTag("Money UI").GetComponent<MoneyController>();
         gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
+
+        buttonText.text = string.Format("1x {0} Magazine ({1})", gunName, ammoCost);
 
         button.onClick.AddListener(buyAmmo);
     }

@@ -10,19 +10,23 @@ public class BuyWeaponButton : MonoBehaviour {
     public GameObject weapon;
 
     private Button button;
-    private MoneyController moneyController;
+    private Text buttonText;
     private GameController gameController;
+    private MoneyController moneyController;
 
     // Use this for initialization
     void Start () {
         button = gameObject.GetComponent<Button>();
+        buttonText = transform.GetChild(0).gameObject.GetComponent<Text>();
         moneyController = GameObject.FindWithTag("Money UI").GetComponent<MoneyController>();
         gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
 
+        buttonText.text = string.Format("Buy {0} ({1})", weapon.name, weaponCost);
+
         button.onClick.AddListener(buyWeapon);
     }
-	
-	void buyWeapon()
+
+    void buyWeapon()
     {
         // Check that player does not already have the weapon.
         Transform mainCamera = GameObject.FindWithTag("Player").transform.Find("Main Camera");

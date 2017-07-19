@@ -8,7 +8,7 @@ public class WaveCounterUI : MonoBehaviour {
     private Text waveCounterText;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
         waveCounterText = GetComponent<Text>();
 	}
 

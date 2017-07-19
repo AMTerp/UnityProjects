@@ -12,6 +12,7 @@ public class GameController : MonoBehaviour {
     public float waveRewardPercent;
     public float waveRewardGoldPerHP;
     public float waveLength;
+    public float waveLengthIncrease;
     public float waveIntermission;
     public GameObject[] hazards;
 
@@ -72,6 +73,7 @@ public class GameController : MonoBehaviour {
             else
             {
                 moneyController.changeMoneyText(GetWaveReward());
+                waveLength += waveLengthIncrease;
                 yield return new WaitForSeconds(waveIntermission);
                 waveCounterUI.setWaveCounter(++waveNum);
                 waveInProgress = true;
