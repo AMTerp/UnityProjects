@@ -60,6 +60,11 @@ public class GameController : MonoBehaviour {
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
+
+        if (Input.GetKeyDown(KeyCode.Keypad0))
+        {
+            moneyController.changeMoneyText(1000);
+        }
 	}
 
     IEnumerator WaveController()

@@ -18,7 +18,10 @@ public class GunController : MonoBehaviour {
     public bool automatic;
     public bool chamberBullet;
     public string ammoType;
-    public AudioClip gunSoundClip;
+    public AudioClip gunFireSound;
+    public float gunFireVolume;
+    public AudioClip gunReloadSound;
+    public float gunReloadVolume;
     public GameObject objectToSpawn;
 
     internal int currAmmoInClip;
@@ -35,12 +38,12 @@ public class GunController : MonoBehaviour {
     private Camera mainCamera;
     private AmmoUIController ammoUI;
     private BulletTimer bulletTimerUI;
-    private AudioSource gunShotSound;
+    private AudioSource gunSounds;
     private float initFOV;
 
 	// Use this for initialization
 	void Start () {
-        gunShotSound = GetComponent<AudioSource>();
+        gunSounds = GetComponent<AudioSource>();
         animations = transform.GetChild(0).GetComponent<Animation>();
         ammoUI = GameObject.FindWithTag("Ammo UI").GetComponent<AmmoUIController>();
         mainCamera = transform.parent.parent.GetComponent<Camera>();
@@ -63,7 +66,7 @@ public class GunController : MonoBehaviour {
         if (currAmmoInClip > 0)
         {
             applyRecoil(recoilAmount, recoilYBias);
-            gunShotSound.PlayOneShot(gunSoundClip, 1);
+            gunSounds.PlayOneShot(gunFireSound, gunFireVolume);
             animations.Play(gameObject.name + " Shot");
 
             // If last bullet is being fired, don't do chamber bullet animation nor play .
@@ -153,7 +156,9 @@ public class GunController : MonoBehaviour {
         canFire = false;
         ammoBefore = currAmmoInClip;
         animations.Play(gameObject.name + " Reload");
-        yield return new WaitForSeconds(reloadTime);
+        yield return new WaitForSeconds(reloadTime - gunReloadSound.length);
+        gunSounds.PlayOneShot(gunReloadSound, gunReloadVolume);
+        yield return new WaitForSeconds(gunReloadSound.length);
         if (canFire)
         {
             // If canFire is true, then we must have swapped weapons mid-reload. Cancel the rest of the reload.
