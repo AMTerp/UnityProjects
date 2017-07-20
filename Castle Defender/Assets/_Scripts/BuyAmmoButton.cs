@@ -10,11 +10,12 @@ public class BuyAmmoButton : MonoBehaviour {
     public string gunName;
     public AudioClip buySound;
     public float buySoundVolume;
+    public GameObject shopAudioGameObject;
 
     private Button button;
     private Text buttonText;
-    private Vector3 shopPosition;
     private AmmoUIController ammoUI;
+    private AudioSource shopAudioSource;
     private MoneyController moneyController;
     private GameController gameController;
 
@@ -23,9 +24,9 @@ public class BuyAmmoButton : MonoBehaviour {
         button = gameObject.GetComponent<Button>();
         buttonText = transform.GetChild(0).gameObject.GetComponent<Text>();
         ammoUI = GameObject.FindWithTag("Ammo UI").GetComponent<AmmoUIController>();
+        shopAudioSource = shopAudioGameObject.GetComponent<AudioSource>();
         moneyController = GameObject.FindWithTag("Money UI").GetComponent<MoneyController>();
         gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
-        shopPosition = GameObject.FindWithTag("Shop").transform.position;
 
         buttonText.text = string.Format("1x {0} Magazine ({1})", gunName, ammoCost);
 
@@ -62,8 +63,7 @@ public class BuyAmmoButton : MonoBehaviour {
                     moneyController.changeMoneyText(-ammoCost * (gunController.currSpareAmmo - ammoBefore) / ammoAmount);
 
                     // Play the buy sound and make it non-3D.
-                    AudioSource buySoundSource = gameController.PlayClipAt(buySound, shopPosition, buySoundVolume);
-                    buySoundSource.spatialBlend = 0.0f;
+                    shopAudioSource.PlayOneShot(buySound, buySoundVolume);
                 }
             }
         }
