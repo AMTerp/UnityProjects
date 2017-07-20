@@ -126,4 +126,16 @@ public class GameController : MonoBehaviour {
     {
         return (int) (initEnemyWaveHp * Mathf.Pow(enemyWaveHpIncrease, (waveNum - 1)) * waveRewardGoldPerHP * waveRewardPercent);
     }
+
+    // Adapted version of function written by aldonaletto
+    // Link: http://answers.unity3d.com/questions/316575/adjust-properties-of-audiosource-created-with-play.html?childToView=410492#comment-410492
+    public AudioSource PlayClipAt(AudioClip clip, Vector3 pos, float volume)
+    {
+        GameObject tempGO = new GameObject("TempAudio"); // create the temp object
+        tempGO.transform.position = pos; // set its position
+        AudioSource aSource = tempGO.AddComponent<AudioSource>(); // add an audio source
+        aSource.PlayOneShot(clip, volume); // start the sound at the desired volume
+        Destroy(tempGO, clip.length); // destroy object after clip duration
+        return aSource; // return the AudioSource reference
+    }
 }

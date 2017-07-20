@@ -8,9 +8,12 @@ public class BuyAmmoButton : MonoBehaviour {
     public int ammoAmount;
     public int ammoCost;
     public string gunName;
+    public AudioClip buySound;
+    public float buySoundVolume;
 
     private Button button;
     private Text buttonText;
+    private Vector3 shopPosition;
     private AmmoUIController ammoUI;
     private MoneyController moneyController;
     private GameController gameController;
@@ -22,13 +25,14 @@ public class BuyAmmoButton : MonoBehaviour {
         ammoUI = GameObject.FindWithTag("Ammo UI").GetComponent<AmmoUIController>();
         moneyController = GameObject.FindWithTag("Money UI").GetComponent<MoneyController>();
         gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
+        shopPosition = GameObject.FindWithTag("Shop").transform.position;
 
         buttonText.text = string.Format("1x {0} Magazine ({1})", gunName, ammoCost);
 
         button.onClick.AddListener(buyAmmo);
     }
-	
-	void buyAmmo()
+
+    void buyAmmo()
     {
         // Check that player has the relevant gun.
         Transform mainCamera = GameObject.FindWithTag("Player").transform.Find("Main Camera");
@@ -39,7 +43,7 @@ public class BuyAmmoButton : MonoBehaviour {
             if (gunSlot.childCount > 0 && gunSlot.GetChild(0).gameObject.name.Equals(gunName))
             {
                 // Player has the relevant gun.
-                
+
                 // Only buy ammo if the player has enough ammo.
                 if (gameController.money >= ammoCost)
                 {
@@ -56,6 +60,10 @@ public class BuyAmmoButton : MonoBehaviour {
                     // Update the player's money and update the UI.
                     // Only charge for the ammo that the player actually gains.
                     moneyController.changeMoneyText(-ammoCost * (gunController.currSpareAmmo - ammoBefore) / ammoAmount);
+
+                    // Play the buy sound and make it non-3D.
+                    AudioSource buySoundSource = gameController.PlayClipAt(buySound, shopPosition, buySoundVolume);
+                    buySoundSource.spatialBlend = 0.0f;
                 }
             }
         }
