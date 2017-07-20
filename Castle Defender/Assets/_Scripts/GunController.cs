@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Currently using this sound https://freesound.org/people/deleted_user_4401185/sounds/253438/
 public class GunController : MonoBehaviour {
 
     public float damage;
