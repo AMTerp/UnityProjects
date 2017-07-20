@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerShooting : MonoBehaviour {
 
-    private float nextFire;
     private int currWeaponSlotHeld;
     private GameObject mainCamera;
     private GunController gunController;
@@ -77,7 +76,6 @@ public class PlayerShooting : MonoBehaviour {
     void Reload()
     {
         StartCoroutine(gunController.Reload());
-        nextFire = Time.time + gunController.reloadTime;
     }
 
     void SwapWeapons(int weaponSlot)
@@ -96,7 +94,6 @@ public class PlayerShooting : MonoBehaviour {
         // Set current held weapon model to inactive.
         gunController.canFire = true; // Indicates to current gunController to cancel reload.
         gunController.animations.Stop(); // Stop any animations, particularly bullet chambering animations.
-        nextFire = 0.0f; // Allow for immediate shooting.
         mainCamera.transform.Find("Weapon Slot " + currWeaponSlotHeld).GetChild(0).GetChild(0).gameObject.SetActive(false);
 
         Transform newWeapon = mainCamera.transform.Find("Weapon Slot " + weaponSlot).GetChild(0);

@@ -14,6 +14,7 @@ public class GunController : MonoBehaviour {
     public float reloadTime;
     public float zoomTime;
     public float zoomFOV;
+    public float aiDelay;
     public bool automatic;
     public bool chamberBullet;
     public string ammoType;
@@ -29,10 +30,12 @@ public class GunController : MonoBehaviour {
     internal float nextFire;
     internal Animation animations;
     internal bool zoomedIn;
+
     private Vector3 idlePosition;
     private Vector3 idleRotation;
     private Vector3 idleScale;
 
+    private bool attachedToPlayer;
     private int ammoBefore;
     private Camera mainCamera;
     private AmmoUIController ammoUI;
@@ -42,10 +45,11 @@ public class GunController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        attachedToPlayer = transform.parent.parent.name.Equals("Main Camera");
+        
         gunSounds = GetComponent<AudioSource>();
         animations = transform.GetChild(0).GetComponent<Animation>();
         ammoUI = GameObject.FindWithTag("Ammo UI").GetComponent<AmmoUIController>();
-        mainCamera = transform.parent.parent.GetComponent<Camera>();
         bulletTimerUI = GameObject.FindWithTag("Bullet Timer").GetComponent<BulletTimer>();
 
         idlePosition = transform.GetChild(0).localPosition;
@@ -56,15 +60,28 @@ public class GunController : MonoBehaviour {
         currSpareAmmo = initSpareAmmo;
         canFire = true;
         zoomedIn = false;
-        initFOV = mainCamera.fieldOfView;
         nextFire = 0.0f;
+
+        if (attachedToPlayer)
+        {
+            mainCamera = transform.parent.parent.GetComponent<Camera>();
+            initFOV = mainCamera.fieldOfView;
+        }
+        else
+        {
+            // Add a slight random extra delay to each turret such that they don't all shoot the same target.
+            firePause *= (aiDelay + Random.Range(0.0f, 0.01f));
+        }
+            
     }
 
     public void Fire()
     {
         if (currAmmoInClip > 0)
         {
-            applyRecoil(recoilAmount, recoilYBias);
+            if (attachedToPlayer)
+                applyRecoil(recoilAmount, recoilYBias);
+
             gunSounds.PlayOneShot(gunFireSound, gunFireVolume);
             animations.Play(gameObject.name + " Shot");
 
@@ -76,9 +93,10 @@ public class GunController : MonoBehaviour {
                     StartCoroutine(ChamberBullet());
                 }
 
-                StartCoroutine(bulletTimerUI.RunTimer(firePause));
+                if (attachedToPlayer)
+                    StartCoroutine(bulletTimerUI.RunTimer(firePause));
             }
-            else
+            else if (attachedToPlayer)
             {
                 StartCoroutine(bulletTimerUI.RunTimer(firePause, "empty"));
             }
@@ -107,7 +125,8 @@ public class GunController : MonoBehaviour {
             currAmmoInClip -= 1;
             nextFire = Time.time + firePause;
 
-            ammoUI.setAmmoCount(currAmmoInClip, currSpareAmmo);
+            if (attachedToPlayer)
+                ammoUI.setAmmoCount(currAmmoInClip, currSpareAmmo);
         }
     }
 
@@ -153,22 +172,34 @@ public class GunController : MonoBehaviour {
     public IEnumerator Reload()
     {
         canFire = false;
+        nextFire = Time.time + reloadTime;
         ammoBefore = currAmmoInClip;
         animations.Play(gameObject.name + " Reload");
         yield return new WaitForSeconds(reloadTime - gunReloadSound.length);
-        gunSounds.PlayOneShot(gunReloadSound, gunReloadVolume);
-        yield return new WaitForSeconds(gunReloadSound.length);
+
         if (canFire)
         {
             // If canFire is true, then we must have swapped weapons mid-reload. Cancel the rest of the reload.
+            nextFire = 0.0f;
+            yield break;
+        }
+
+        gunSounds.PlayOneShot(gunReloadSound, gunReloadVolume);
+        yield return new WaitForSeconds(gunReloadSound.length);
+
+        if (canFire)
+        {
+            // If canFire is true, then we must have swapped weapons mid-reload. Cancel the rest of the reload.
+            nextFire = 0.0f;
             yield break;
         }
 
         currAmmoInClip = Mathf.Clamp(magazineSize, 0, currSpareAmmo + ammoBefore);
         currSpareAmmo -= currAmmoInClip - ammoBefore;
-        ammoUI.setAmmoCount(currAmmoInClip, currSpareAmmo);
-        StartCoroutine(bulletTimerUI.RunTimer(firePause, "full"));
         canFire = true;
+        if (attachedToPlayer)
+            ammoUI.setAmmoCount(currAmmoInClip, currSpareAmmo);
+            StartCoroutine(bulletTimerUI.RunTimer(firePause, "full"));
     }
 
     public void resetTransform()
