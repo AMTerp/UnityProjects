@@ -103,11 +103,11 @@ public class GunController : MonoBehaviour {
 
 
             RaycastHit hit;
-            if (Physics.Raycast(transform.parent.position, transform.up, out hit))
+            if (Physics.Raycast(transform.parent.parent.position, transform.up, out hit))
             {
                 if (ammoType.Equals("bullet"))
                 {
-                    if (hit.collider.gameObject.transform.parent && hit.collider.gameObject.transform.parent.CompareTag("Enemy"))
+                    if (hit.collider.gameObject.CompareTag("Enemy"))
                     {
                         Health health = hit.collider.gameObject.transform.parent.GetComponent<Health>();
                         health.TakeDamage(damage);

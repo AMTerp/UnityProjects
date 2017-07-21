@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 
+    public int targetFrameRate;
+    public bool enableVsync;
     public float zSpawnValue;
     public float xSpawnWidth;
     public float initEnemyWaveHp;
@@ -25,6 +27,15 @@ public class GameController : MonoBehaviour {
     private int waveNum;
     private WaveCounterUI waveCounterUI;
     private MoneyController moneyController;
+
+    void Awake()
+    {
+        if (!enableVsync)
+        {
+            QualitySettings.vSyncCount = 0;
+            Application.targetFrameRate = targetFrameRate;
+        }
+    }
 
     // Use this for initialization
     void Start () {

@@ -6,26 +6,30 @@ public class AITurretController : MonoBehaviour {
 
     public float aiFireDelay;
 
+    private Transform aiCameraTransform;
     private GameObject currTarget;
     private GameObject[] enemies;
     private AILookX lookXScript;
     private AILookY lookYScript;
+    private int currTargetObjectID;
     private GunController gunController;
+    private bool targetInCrosshair;
 
     void Awake()
     {
+        aiCameraTransform = transform.Find("AI Camera");
         lookXScript = GetComponent<AILookX>();
         lookYScript = GetComponent<AILookY>();
-        gunController = transform.Find("AI Camera").GetChild(0).GetChild(0).gameObject.GetComponent<GunController>();
+        gunController = aiCameraTransform.GetChild(0).GetChild(0).gameObject.GetComponent<GunController>();
     }
 
     void Start()
     {
         gunController.firePause *= aiFireDelay;
+        targetInCrosshair = false;
     }
 
     void Update () {
-        Debug.Log("Curr target: " + currTarget);
         Behavior();
 	}
 
@@ -33,31 +37,65 @@ public class AITurretController : MonoBehaviour {
     {
         if (!currTarget)
         {
+            targetInCrosshair = false;
+            currTargetObjectID = -1;
             currTarget = FindNearestEnemy();
             if (!currTarget)
             {
                 // If there's STILL no target, try to reload.
                 aiReload();
             }
+            Debug.Log("No target, ammo: " + gunController.currAmmoInClip);
+
+            // Regardless of whether or not a new target has been found, if the current 
+            // magazine is empty, attempt to reload.
+            if (gunController.currAmmoInClip == 0)
+            {
+                Debug.Log("Tryna reload");
+                aiReload();
+            }
         }
         else
         {
-            // First ensure that the turret is looking at the target.
+            // First, look towards the target.
             lookXScript.LookAtTarget(currTarget.transform);
             lookYScript.LookAtTarget(currTarget.transform);
 
-            if (gunController.currAmmoInClip > 0)
+            if (targetInCrosshair)
             {
-                if (Time.time > gunController.nextFire)
+                if (gunController.currAmmoInClip > 0)
                 {
-                    gunController.Fire();
+                    if (Time.time > gunController.nextFire)
+                    {
+                        gunController.Fire();
+                    }
+                }
+                else
+                {
+                    aiReload();
                 }
             }
             else
             {
-                aiReload();
+                targetInCrosshair = IsTargetInCrosshair();
+            }
+
+        }
+    }
+
+    bool IsTargetInCrosshair()
+    {
+        RaycastHit crosshairTarget;
+        if (Physics.Raycast(aiCameraTransform.position, aiCameraTransform.forward, out crosshairTarget))
+        {
+            if (crosshairTarget.collider.gameObject.CompareTag("Enemy") && 
+                crosshairTarget.collider.gameObject.transform.parent.GetComponent<EnemyController>().objectID == currTargetObjectID)
+            {
+                return true;
             }
         }
+
+        return false;
     }
 
     void aiReload()
@@ -84,6 +122,10 @@ public class AITurretController : MonoBehaviour {
                 minDistance = tempDistance;
             }
         }
+
+        // If enemy found, set the target object ID.
+        if (currClosestEnemy)
+            currTargetObjectID = currClosestEnemy.GetComponent<EnemyController>().objectID;
 
         return currClosestEnemy;
     }

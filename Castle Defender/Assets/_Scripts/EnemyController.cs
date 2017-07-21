@@ -12,6 +12,8 @@ public class EnemyController : MonoBehaviour {
     public int moneyReward;
     public float checkpointRadius;
 
+    internal int objectID;
+
     private int numCheckpoints = 2;
     private int checkpoint;
     private float nextAttack;
@@ -52,6 +54,8 @@ public class EnemyController : MonoBehaviour {
         nextAttack = 0.0f;
 
         checkpoint = (gate.transform.GetChild(numCheckpoints).gameObject.activeSelf) ? 0 : 1;
+
+        objectID = (int) (Time.time * 100000);
     }
 
     // Update is called once per frame
