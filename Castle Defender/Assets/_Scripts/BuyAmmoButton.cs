@@ -45,12 +45,14 @@ public class BuyAmmoButton : MonoBehaviour {
             {
                 // Player has the relevant gun.
 
-                // Only buy ammo if the player has enough ammo.
+                // Only buy ammo if the player has enough money.
                 if (gameController.money >= ammoCost)
                 {
                     GunController gunController = gunSlot.GetChild(0).gameObject.GetComponent<GunController>();
                     int ammoBefore = gunController.currSpareAmmo;
-                    gunController.currSpareAmmo = Mathf.Clamp(gunController.currSpareAmmo + ammoAmount, 0, gunController.maxSpareAmmo);
+                    gunController.currSpareAmmo = Mathf.Clamp(gunController.currSpareAmmo + ammoAmount, 
+                        0, 
+                        gunController.maxSpareAmmo + gunController.magazineSize - gunController.currAmmoInClip);
 
                     // If the player is currently holding the gun, update the ammo count on the UI.
                     if (gunSlot.GetChild(0).GetChild(0).gameObject.activeSelf)
