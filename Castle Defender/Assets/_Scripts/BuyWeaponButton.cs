@@ -28,10 +28,10 @@ public class BuyWeaponButton : MonoBehaviour {
 
         buttonText.text = string.Format("Buy {0} ({1})", weapon.name, weaponCost);
 
-        button.onClick.AddListener(buyWeapon);
+        button.onClick.AddListener(BuyWeapon);
     }
 
-    void buyWeapon()
+    void BuyWeapon()
     {
         // Check that player does not already have the weapon.
         Transform mainCamera = GameObject.FindWithTag("Player").transform.Find("Main Camera");

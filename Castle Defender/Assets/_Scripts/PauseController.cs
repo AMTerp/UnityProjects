@@ -34,6 +34,7 @@ public class PauseController : MonoBehaviour {
         {
             transform.GetChild(i).gameObject.SetActive(true);
         }
+        Cursor.lockState = CursorLockMode.None;
         paused = true;
     }
 
@@ -44,6 +45,7 @@ public class PauseController : MonoBehaviour {
             transform.GetChild(i).gameObject.SetActive(false);
         }
         Time.timeScale = 1;
+        Cursor.lockState = CursorLockMode.Locked;
         paused = false;
     }
 }

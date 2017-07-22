@@ -50,7 +50,7 @@ public class GameController : MonoBehaviour {
         money = 800;
         moneyController.setMoneyText(money);
         waveNum = 1;
-        waveCounterUI.setWaveCounter(waveNum);
+        waveCounterUI.setWaveCounter(waveNum, currEnemyWaveHp);
 
         waveInProgress = true;
         uiDisableMouseLook = false;
@@ -67,11 +67,6 @@ public class GameController : MonoBehaviour {
 
     void CheckInputs()
     {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            Application.Quit();
-        }
-
         if (Input.GetKeyDown(KeyCode.U))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -108,7 +103,7 @@ public class GameController : MonoBehaviour {
                 moneyController.changeMoneyText(GetWaveReward());
                 waveLength += waveLengthIncrease;
                 yield return new WaitForSeconds(waveIntermission);
-                waveCounterUI.setWaveCounter(++waveNum);
+                waveCounterUI.setWaveCounter(++waveNum, currEnemyWaveHp);
                 waveInProgress = true;
                 StartCoroutine(SpawnWave());
             }

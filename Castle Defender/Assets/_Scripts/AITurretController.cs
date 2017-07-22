@@ -5,6 +5,7 @@ using UnityEngine;
 public class AITurretController : MonoBehaviour {
 
     public float aiFireDelay;
+    public float gateBias;
 
     private Transform aiCameraTransform;
     private GameObject currTarget;
@@ -13,6 +14,7 @@ public class AITurretController : MonoBehaviour {
     private AILookY lookYScript;
     private int currTargetObjectID;
     private GunController gunController;
+    private GameObject gate;
     private bool targetInCrosshair;
 
     void Awake()
@@ -21,6 +23,7 @@ public class AITurretController : MonoBehaviour {
         lookXScript = GetComponent<AILookX>();
         lookYScript = GetComponent<AILookY>();
         gunController = aiCameraTransform.GetChild(0).GetChild(0).gameObject.GetComponent<GunController>();
+        gate = GameObject.FindWithTag("Gate");
     }
 
     void Start()
@@ -45,13 +48,11 @@ public class AITurretController : MonoBehaviour {
                 // If there's STILL no target, try to reload.
                 aiReload();
             }
-            Debug.Log("No target, ammo: " + gunController.currAmmoInClip);
 
             // Regardless of whether or not a new target has been found, if the current 
             // magazine is empty, attempt to reload.
             if (gunController.currAmmoInClip == 0)
             {
-                Debug.Log("Tryna reload");
                 aiReload();
             }
         }
@@ -110,12 +111,13 @@ public class AITurretController : MonoBehaviour {
     {
         enemies = GameObject.FindGameObjectsWithTag("Enemy");
         float minDistance = Mathf.Infinity;
+        Vector3 gateTurretMidPoint = Vector3.Lerp(transform.position, gate.transform.position, gateBias);
         GameObject currClosestEnemy = null;
         float tempDistance;
 
         foreach (GameObject enemy in enemies)
         {
-            tempDistance = Vector3.Distance(transform.position, enemy.transform.position);
+            tempDistance = Vector3.Distance(gateTurretMidPoint, enemy.transform.position);
             if (tempDistance < minDistance)
             {
                 currClosestEnemy = enemy;

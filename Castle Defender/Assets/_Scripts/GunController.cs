@@ -35,6 +35,7 @@ public class GunController : MonoBehaviour {
     private Vector3 idleRotation;
     private Vector3 idleScale;
 
+    private float shotAnimationLength;
     private bool attachedToPlayer;
     private int ammoBefore;
     private Camera mainCamera;
@@ -55,6 +56,16 @@ public class GunController : MonoBehaviour {
         idlePosition = transform.GetChild(0).localPosition;
         idleRotation = transform.GetChild(0).localEulerAngles;
         idleScale = transform.GetChild(0).localScale;
+
+        // Get the length of the animation clip for gunfire.
+        foreach (AnimationState state in animations)
+        {
+            if (state.name.Equals(gameObject.name + " Shot"))
+            {
+                shotAnimationLength = state.length;
+                break;
+            }
+        }
 
         currAmmoInClip = magazineSize;
         currSpareAmmo = initSpareAmmo;
@@ -157,15 +168,15 @@ public class GunController : MonoBehaviour {
 
     IEnumerator ChamberBullet()
     {
-        bool played = false;
-        while (!played)
+        // Wait until the shot fire animation is finished.
+        yield return new WaitForSeconds(shotAnimationLength);
+        // As animations.isPlaying is not false yet, wait another frame for it to become false.
+        yield return new WaitForEndOfFrame();
+
+        // With this if statement, the chamber bullet animation will only play if the player is not reloading.
+        if (!animations.isPlaying)
         {
-            if (!animations.isPlaying)
-            {
-                animations.Play(gameObject.name + " Chamber Bullet");
-                played = true;
-            }
-            yield return new WaitForEndOfFrame();
+            animations.Play(gameObject.name + " Chamber Bullet");
         }
     }
 

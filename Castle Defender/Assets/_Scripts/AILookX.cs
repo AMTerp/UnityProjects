@@ -13,6 +13,8 @@ public class AILookX : MonoBehaviour {
         //transform.LookAt(target.position);
         //transform.localEulerAngles = new Vector3(0.0f, transform.localEulerAngles.y, 0.0f);
 
+        // Adapted from code written by Mike 3.
+        // Link: http://answers.unity3d.com/answers/36256/view.html
         Vector3 lookPos = target.position - transform.position;
         lookPos.y = 0;
         Quaternion rotation = Quaternion.LookRotation(lookPos);

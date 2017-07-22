@@ -12,8 +12,8 @@ public class WaveCounterUI : MonoBehaviour {
         waveCounterText = GetComponent<Text>();
 	}
 
-    public void setWaveCounter(int waveNum)
+    public void setWaveCounter(int waveNum, float waveHP)
     {
-        waveCounterText.text = string.Format("Wave: {0, 2}", waveNum);
+        waveCounterText.text = string.Format("Wave: {0, 2}\n({1})", waveNum, (int) waveHP);
     }
 }

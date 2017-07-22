@@ -20,6 +20,8 @@ public class AILookY : MonoBehaviour {
         //aiCamera.transform.LookAt(target.position);
         //aiCamera.transform.localEulerAngles = new Vector3(aiCamera.transform.localEulerAngles.x, 0.0f, 0.0f);
 
+        // Adapted from code written by Mike 3.
+        // Link: http://answers.unity3d.com/answers/36256/view.html
         Vector3 lookPos = target.position - aiCamera.transform.position;
         Quaternion rotation = Quaternion.LookRotation(lookPos);
         aiCamera.transform.rotation = Quaternion.Slerp(aiCamera.transform.rotation, rotation, Time.deltaTime * lookSpeed);
