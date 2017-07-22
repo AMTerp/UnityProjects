@@ -94,6 +94,7 @@ public class GunController : MonoBehaviour {
                 applyRecoil(recoilAmount, recoilYBias);
 
             gunSounds.PlayOneShot(gunFireSound, gunFireVolume);
+            Debug.Log("Gonna play animation: " + gameObject.name + " Shot");
             animations.Play(gameObject.name + " Shot");
 
             // If last bullet is being fired, don't do chamber bullet animation nor play .
@@ -174,6 +175,7 @@ public class GunController : MonoBehaviour {
         yield return new WaitForEndOfFrame();
 
         // With this if statement, the chamber bullet animation will only play if the player is not reloading.
+        Debug.Log("Gonna play chamber bullet " + animations.isPlaying);
         if (!animations.isPlaying)
         {
             animations.Play(gameObject.name + " Chamber Bullet");

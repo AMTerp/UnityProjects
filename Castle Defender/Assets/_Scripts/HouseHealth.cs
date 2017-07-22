@@ -8,21 +8,21 @@ public class HouseHealth : MonoBehaviour {
 
     private GameObject healthBar;
     private HouseController houseController;
-    private float initHealthHealth;
-    private float currHealthHealth;
+    private float initHealth;
+    private float currHealth;
 
     // Use this for initialization
     void Start () {
         healthBar = transform.GetChild(2).gameObject;
         houseController = house.GetComponent<HouseController>();
-        initHealthHealth = houseController.health;
-        currHealthHealth = initHealthHealth;
+        initHealth = houseController.health;
+        currHealth = initHealth;
     }
 
     public void updateHealthBar()
     {
-        currHealthHealth = Mathf.Clamp(houseController.health, 0, initHealthHealth);
-        healthBar.transform.localScale = new Vector3(currHealthHealth / initHealthHealth,
+        currHealth = Mathf.Clamp(houseController.health, 0, initHealth);
+        healthBar.transform.localScale = new Vector3(currHealth / initHealth,
             healthBar.transform.localScale.y,
             healthBar.transform.localScale.z);
     }
