@@ -18,6 +18,7 @@ public class BuyAmmoButton : MonoBehaviour {
     private AudioSource shopAudioSource;
     private MoneyController moneyController;
     private GameController gameController;
+    private int ammoBefore;
 
     // Use this for initialization
     void Start () {
@@ -49,7 +50,7 @@ public class BuyAmmoButton : MonoBehaviour {
                 if (gameController.money >= ammoCost)
                 {
                     GunController gunController = gunSlot.GetChild(0).gameObject.GetComponent<GunController>();
-                    int ammoBefore = gunController.currSpareAmmo;
+                    ammoBefore = gunController.currSpareAmmo;
                     gunController.currSpareAmmo = Mathf.Clamp(gunController.currSpareAmmo + ammoAmount, 
                         0, 
                         gunController.maxSpareAmmo + gunController.magazineSize - gunController.currAmmoInClip);
@@ -64,8 +65,11 @@ public class BuyAmmoButton : MonoBehaviour {
                     // Only charge for the ammo that the player actually gains.
                     moneyController.changeMoneyText(-ammoCost * (gunController.currSpareAmmo - ammoBefore) / ammoAmount);
 
-                    // Play the buy sound and make it non-3D.
-                    shopAudioSource.PlayOneShot(buySound, buySoundVolume);
+                    // Play the buy sound only if ammo was actually bought.
+                    if (ammoBefore < gunController.currSpareAmmo)
+                    {
+                        shopAudioSource.PlayOneShot(buySound, buySoundVolume);
+                    }
                 }
             }
         }

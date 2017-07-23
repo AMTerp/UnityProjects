@@ -19,12 +19,13 @@ public class GameController : MonoBehaviour {
     public GameObject[] hazards;
 
     internal int money;
+    internal int waveNum;
     internal bool uiDisableMouseLook;
     internal bool uiDisableMouseClick;
+    internal float currEnemyWaveHp;
+    internal float remainingCurrEnemyWaveHp;
 
     private bool waveInProgress;
-    private float currEnemyWaveHp;
-    private int waveNum;
     private WaveCounterUI waveCounterUI;
     private MoneyController moneyController;
 
@@ -46,11 +47,12 @@ public class GameController : MonoBehaviour {
         moneyController = GameObject.FindWithTag("Money UI").GetComponent<MoneyController>();
 
         currEnemyWaveHp = initEnemyWaveHp;
+        remainingCurrEnemyWaveHp = currEnemyWaveHp;
 
         money = 800;
         moneyController.setMoneyText(money);
         waveNum = 1;
-        waveCounterUI.setWaveCounter(waveNum, currEnemyWaveHp);
+        waveCounterUI.setWaveCounter(waveNum, currEnemyWaveHp, currEnemyWaveHp);
 
         waveInProgress = true;
         uiDisableMouseLook = false;
@@ -102,8 +104,10 @@ public class GameController : MonoBehaviour {
             {
                 moneyController.changeMoneyText(GetWaveReward());
                 waveLength += waveLengthIncrease;
+                currEnemyWaveHp *= enemyWaveHpIncrease;
+                remainingCurrEnemyWaveHp = currEnemyWaveHp;
                 yield return new WaitForSeconds(waveIntermission);
-                waveCounterUI.setWaveCounter(++waveNum, currEnemyWaveHp);
+                waveCounterUI.setWaveCounter(++waveNum, remainingCurrEnemyWaveHp, currEnemyWaveHp);
                 waveInProgress = true;
                 StartCoroutine(SpawnWave());
             }
@@ -112,26 +116,24 @@ public class GameController : MonoBehaviour {
 
     IEnumerator SpawnWave()
     {
-        float remainingEnemyWaveHp = currEnemyWaveHp;
+        float remainingHpToSpawn = currEnemyWaveHp;
         float spawnWait = waveLength / (currEnemyWaveHp / 100);
 
         Vector3 spawnPosition;
         GameObject toSpawn;
         Quaternion spawnRotation = Quaternion.identity;
 
-        while (remainingEnemyWaveHp >= 100)
+        while (remainingHpToSpawn >= 100)
         {
             toSpawn = hazards[0];
             spawnPosition = GenerateEnemySpawnPos(toSpawn.transform.localScale.y);
             Instantiate(toSpawn, spawnPosition, spawnRotation);
 
-            remainingEnemyWaveHp -= 100;
+            remainingHpToSpawn -= 100;
 
             yield return new WaitForSeconds(spawnWait);
         }
 
-        currEnemyWaveHp *= enemyWaveHpIncrease;
-        Debug.Log("Wave complete! New currEnemyWaveHp: " + currEnemyWaveHp);
         waveInProgress = false;
     }
 

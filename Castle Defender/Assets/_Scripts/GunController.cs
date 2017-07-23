@@ -58,14 +58,8 @@ public class GunController : MonoBehaviour {
         idleScale = transform.GetChild(0).localScale;
 
         // Get the length of the animation clip for gunfire.
-        foreach (AnimationState state in animations)
-        {
-            if (state.name.Equals(gameObject.name + " Shot"))
-            {
-                shotAnimationLength = state.length;
-                break;
-            }
-        }
+        // This code only works if the default clip in the Animation component is the gunshot animation.
+        shotAnimationLength = animations.clip.length;
 
         currAmmoInClip = magazineSize;
         currSpareAmmo = initSpareAmmo;
@@ -94,7 +88,6 @@ public class GunController : MonoBehaviour {
                 applyRecoil(recoilAmount, recoilYBias);
 
             gunSounds.PlayOneShot(gunFireSound, gunFireVolume);
-            Debug.Log("Gonna play animation: " + gameObject.name + " Shot");
             animations.Play(gameObject.name + " Shot");
 
             // If last bullet is being fired, don't do chamber bullet animation nor play .
@@ -175,7 +168,6 @@ public class GunController : MonoBehaviour {
         yield return new WaitForEndOfFrame();
 
         // With this if statement, the chamber bullet animation will only play if the player is not reloading.
-        Debug.Log("Gonna play chamber bullet " + animations.isPlaying);
         if (!animations.isPlaying)
         {
             animations.Play(gameObject.name + " Chamber Bullet");

@@ -5,9 +5,11 @@ using UnityEngine;
 public class PauseController : MonoBehaviour {
 
     private bool paused;
+    private GameController gameController;
 
 	// Use this for initialization
 	void Start () {
+        gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
         paused = false;
         unpause();
 	}
@@ -34,6 +36,7 @@ public class PauseController : MonoBehaviour {
         {
             transform.GetChild(i).gameObject.SetActive(true);
         }
+        gameController.uiDisableMouseClick = true;
         Cursor.lockState = CursorLockMode.None;
         paused = true;
     }
@@ -45,6 +48,7 @@ public class PauseController : MonoBehaviour {
             transform.GetChild(i).gameObject.SetActive(false);
         }
         Time.timeScale = 1;
+        gameController.uiDisableMouseClick = false;
         Cursor.lockState = CursorLockMode.Locked;
         paused = false;
     }
