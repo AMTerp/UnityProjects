@@ -2,14 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class BuyAmmoButton : MonoBehaviour {
+public class BuyAmmoButton : MonoBehaviour, IPointerEnterHandler {
 
     public int ammoAmount;
     public int ammoCost;
     public string gunName;
     public AudioClip buySound;
     public float buySoundVolume;
+    public AudioClip denySound;
+    public float denyVolume;
+    public AudioClip hoverSound;
+    public float hoverVolume;
     public GameObject shopAudioGameObject;
 
     private Button button;
@@ -39,7 +44,8 @@ public class BuyAmmoButton : MonoBehaviour {
         // Check that player has the relevant gun.
         Transform mainCamera = GameObject.FindWithTag("Player").transform.Find("Main Camera");
         Transform gunSlot;
-        for (int i = 0; i < mainCamera.childCount; i++)
+        int i;
+        for (i = 0; i < mainCamera.childCount; i++)
         {
             gunSlot = mainCamera.GetChild(i);
             if (gunSlot.childCount > 0 && gunSlot.GetChild(0).gameObject.name.Equals(gunName))
@@ -70,8 +76,44 @@ public class BuyAmmoButton : MonoBehaviour {
                     {
                         shopAudioSource.PlayOneShot(buySound, buySoundVolume);
                     }
+                    else
+                    {
+                        // No ammo was bought.
+                        PlayDenySound();
+                    }
                 }
+                else
+                {
+                    // Player does not have enough money to buy ammo.
+                    PlayDenySound();
+                }
+
+                // Relevant gun was found. Stop searching.
+                break;
             }
         }
+
+        if (i == mainCamera.childCount)
+        {
+            // Player did not have the relevant gun.
+            PlayDenySound();
+        }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        Debug.Log("Pointer entered");
+        shopAudioSource.PlayOneShot(hoverSound, hoverVolume);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        Debug.Log("Pointer exitted");
+        shopAudioSource.PlayOneShot(hoverSound, hoverVolume);
+    }
+
+    void PlayDenySound()
+    {
+        shopAudioSource.PlayOneShot(denySound, denyVolume);
     }
 }

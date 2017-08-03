@@ -2,14 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class BuyWeaponButton : MonoBehaviour {
+public class BuyWeaponButton : MonoBehaviour, IPointerEnterHandler {
 
     public int weaponSlot;
     public int weaponCost;
     public GameObject weapon;
     public AudioClip buySound;
     public float buySoundVolume;
+    public AudioClip denySound;
+    public float denyVolume;
+    public AudioClip hoverSound;
+    public float hoverVolume;
     public GameObject shopAudioGameObject;
 
     private Button button;
@@ -41,7 +46,8 @@ public class BuyWeaponButton : MonoBehaviour {
             weaponSlotObject = mainCamera.GetChild(i);
             if (weaponSlotObject.childCount > 0 && weaponSlotObject.GetChild(0).gameObject.name.Equals(weapon.name))
             {
-                // Already have weapon. Return.
+                // Already have weapon. Play deny sound and return.
+                PlayDenySound();
                 return;
             }
         }
@@ -61,5 +67,27 @@ public class BuyWeaponButton : MonoBehaviour {
             // Play the buy sound.
             shopAudioSource.PlayOneShot(buySound, buySoundVolume);
         }
+        else
+        {
+            // Player did not have enough money.
+            PlayDenySound();
+        }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        Debug.Log("Pointer entered");
+        shopAudioSource.PlayOneShot(hoverSound, hoverVolume);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        Debug.Log("Pointer exitted");
+        shopAudioSource.PlayOneShot(hoverSound, hoverVolume);
+    }
+
+    void PlayDenySound()
+    {
+        shopAudioSource.PlayOneShot(denySound, denyVolume);
     }
 }
