@@ -11,6 +11,10 @@ public class EnemyController : MonoBehaviour {
     public float attackRange;
     public int moneyReward;
     public float checkpointRadius;
+    public AudioClip gateAttackSound;
+    public float gateAttackVolume;
+    public AudioClip[] houseAttackSounds;
+    public float houseAttackVolume;
 
     internal int objectID;
 
@@ -25,6 +29,7 @@ public class EnemyController : MonoBehaviour {
     private GateController gateController;
     private Transform postGateCheckpoint1;
     private Transform postGateCheckpoint2;
+    private AudioSource enemySounds;
 
     private GameObject nwHouse;
     private GameObject neHouse;
@@ -35,6 +40,7 @@ public class EnemyController : MonoBehaviour {
     // Use this for initialization
     void Start() {
         rb = GetComponent<Rigidbody>();
+        enemySounds = GetComponent<AudioSource>();
 
         gate = GameObject.FindWithTag("Gate");
         nwHouse = GameObject.FindWithTag("NW House");
@@ -162,7 +168,9 @@ public class EnemyController : MonoBehaviour {
         if (Time.time > nextAttack)
         {
             transform.LookAt(houseTarget.transform);
+
             attackAnimation.Play();
+            enemySounds.PlayOneShot(houseAttackSounds[Random.Range(0, houseAttackSounds.Length)], houseAttackVolume);
 
             houseTargetScript.takeDamage(attackDamage);
 
@@ -191,7 +199,9 @@ public class EnemyController : MonoBehaviour {
         if (Time.time > nextAttack)
         {
             transform.LookAt(gate.transform);
+
             attackAnimation.Play();
+            enemySounds.PlayOneShot(gateAttackSound, gateAttackVolume);
 
             gateController.takeDamage(attackDamage);
 
