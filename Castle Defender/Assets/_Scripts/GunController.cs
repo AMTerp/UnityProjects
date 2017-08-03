@@ -22,6 +22,11 @@ public class GunController : MonoBehaviour {
     public float gunFireVolume;
     public AudioClip gunReloadSound;
     public float gunReloadVolume;
+    public AudioClip chamberBulletSound;
+    public float chamberBulletVolume;
+    public float chamberBulletDelay;
+    public AudioClip emptyGunSound;
+    public float emptyGunVolume;
     public GameObject objectToSpawn;
 
     internal int currAmmoInClip;
@@ -133,6 +138,14 @@ public class GunController : MonoBehaviour {
             if (attachedToPlayer)
                 ammoUI.setAmmoCount(currAmmoInClip, currSpareAmmo);
         }
+        else
+        {
+            // Clip must be empty. Play appropriate sound.
+            gunSounds.PlayOneShot(emptyGunSound, emptyGunVolume);
+
+            // Prevent the spamming of the emptyGunSound sound effect.
+            nextFire = Time.time + firePause;
+        }
     }
 
     public void applyRecoil(float amount, float yBias)
@@ -171,7 +184,14 @@ public class GunController : MonoBehaviour {
         if (!animations.isPlaying)
         {
             animations.Play(gameObject.name + " Chamber Bullet");
+            StartCoroutine(PlayChamberBulletSound());
         }
+    }
+
+    IEnumerator PlayChamberBulletSound()
+    {
+        yield return new WaitForSeconds(chamberBulletDelay);
+        gunSounds.PlayOneShot(chamberBulletSound, chamberBulletVolume);
     }
 
     public IEnumerator Reload()
