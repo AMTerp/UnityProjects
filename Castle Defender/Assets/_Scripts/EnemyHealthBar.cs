@@ -25,6 +25,10 @@ public class EnemyHealthBar : MonoBehaviour {
     void LookAtTarget(Transform target)
     {
         transform.parent.transform.LookAt(target);
+        transform.parent.transform.localEulerAngles = new Vector3(
+            0.0f,
+            transform.parent.transform.localEulerAngles.y,
+            0.0f);
     }
 
     public void updateHealthBar()

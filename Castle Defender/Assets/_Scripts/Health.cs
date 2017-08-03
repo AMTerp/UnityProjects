@@ -25,11 +25,12 @@ public class Health : MonoBehaviour {
 
     public void TakeDamage(float damage)
     {
-        health -= damage;
-        gameController.remainingCurrEnemyWaveHp -= damage;
+        gameController.remainingCurrEnemyWaveHp -= Mathf.Min(damage, health);
         waveCounterUI.setWaveCounter(gameController.waveNum, 
             gameController.remainingCurrEnemyWaveHp,
             gameController.currEnemyWaveHp);
+
+        health -= damage;
         CheckDead();
         healthBar.updateHealthBar();
     }

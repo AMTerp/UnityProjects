@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class PauseController : MonoBehaviour {
 
+    public AudioSource gameAudio;
+    public AudioClip pauseSound;
+    public float pauseVolume;
+
     private bool paused;
     private GameController gameController;
 
@@ -31,6 +35,8 @@ public class PauseController : MonoBehaviour {
 
     void pause()
     {
+        PlayPauseSound();
+
         Time.timeScale = 0;
         for (int i = 0; i < transform.childCount; i++)
         {
@@ -43,6 +49,8 @@ public class PauseController : MonoBehaviour {
 
     void unpause()
     {
+        PlayPauseSound();
+
         for (int i = 0; i < transform.childCount; i++)
         {
             transform.GetChild(i).gameObject.SetActive(false);
@@ -51,5 +59,10 @@ public class PauseController : MonoBehaviour {
         gameController.uiDisableMouseClick = false;
         Cursor.lockState = CursorLockMode.Locked;
         paused = false;
+    }
+
+    void PlayPauseSound()
+    {
+        gameAudio.PlayOneShot(pauseSound, pauseVolume);
     }
 }
