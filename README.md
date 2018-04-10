@@ -45,15 +45,15 @@ A simple top down arena shooter. Wanted to make something involving cursor posit
 - Can pause!
 - Can exit!
 
-### Castle Defender [[Download]](https://mega.nz/#!7tRAnaRJ!yEh29TVLusIG-7kLh-PFCt2hENM77t6uIxh5qCtqP_s) (August 03, 2017) (Work in progress)
-A first person pseudo-tower defender. Currently in its earliest stages. Planned features include:
+### Castle Defender [[Download]](https://mega.nz/#!7tRAnaRJ!yEh29TVLusIG-7kLh-PFCt2hENM77t6uIxh5qCtqP_s) (August 03, 2017)
+A first person pseudo-tower defender. Due to losing the original Unity files (long story), this project unfortunately had to be abandoned before I would have liked to say it was finished. Planned features included:
 - Roaming atop the walls of your castle.
 - Defending from dozens (maybe 100s) of enemies charging your gates.
 - Use guns and explosives to defend your castle.
 - Ragdoll physics
 - Sound effects
 
-Right now includes:
+*Does* include:
 - Walk around in first-person.
 - Point and shoot at moving enemies.
 - Firing animation, recoil, zooming with right click.
@@ -66,4 +66,4 @@ Right now includes:
 - Swap weapons with 1 - 4, provided you have purchased the weapons.
 - Press "Escape" to pause and read controls.
 
-For a detailed plan of features, see Castle Defender/Assets/To do.xlsx/.
+For a detailed plan of (would-be) features, see Castle Defender/Assets/To do.xlsx/.
