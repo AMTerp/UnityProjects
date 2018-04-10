@@ -1,39 +1,39 @@
 !.gitignore
 
-Race the Sun Remake/*
-!Race the Sun Remake/Assets/
-Race the Sun Remake/Assets/*
-!Race the Sun Remake/Assets/To do.txt
-!Race the Sun Remake/Assets/Scripts
-Race the Sun Remake/Assets/Scripts/*
-!Race the Sun Remake/Assets/Scripts/*.cs
+Original Projects/Race the Sun Remake/*
+!Original Projects/Race the Sun Remake/Assets/
+Original Projects/Race the Sun Remake/Assets/*
+!Original Projects/Race the Sun Remake/Assets/To do.txt
+!Original Projects/Race the Sun Remake/Assets/Scripts
+Original Projects/Race the Sun Remake/Assets/Scripts/*
+!Original Projects/Race the Sun Remake/Assets/Scripts/*.cs
 
-Roll a Ball/*
-!Roll a Ball/Assets/
-Roll a Ball/Assets/*
-!Roll a Ball/Assets/Scripts
-Roll a Ball/Assets/Scripts/*
-!Roll a Ball/Assets/Scripts/*.cs
+Tutorial Projects/Roll a Ball/*
+!Tutorial Projects/Roll a Ball/Assets/
+Tutorial Projects/Roll a Ball/Assets/*
+!Tutorial Projects/Roll a Ball/Assets/Scripts
+Tutorial Projects/Roll a Ball/Assets/Scripts/*
+!Tutorial Projects/Roll a Ball/Assets/Scripts/*.cs
 
-Space Shooter/*
-!Space Shooter/Assets/
-Space Shooter/Assets/*
-!Space Shooter/Assets/Scripts
-Space Shooter/Assets/Scripts/*
-!Space Shooter/Assets/Scripts/*.cs
+Tutorial Projects/Space Shooter/*
+!Tutorial Projects/Space Shooter/Assets/
+Tutorial Projects/Space Shooter/Assets/*
+!Tutorial Projects/Space Shooter/Assets/Scripts
+Tutorial Projects/Space Shooter/Assets/Scripts/*
+!Tutorial Projects/Space Shooter/Assets/Scripts/*.cs
 
-Top-Down Shooter/*
-!Top-Down Shooter/Assets/
-Top-Down Shooter/Assets/*
-!Top-Down Shooter/Assets/To do.txt
-!Top-Down Shooter/Assets/_Scripts
-Top-Down Shooter/Assets/_Scripts/*
-!Top-Down Shooter/Assets/_Scripts/*.cs
+Original Projects/Top-Down Shooter/*
+!Original Projects/Top-Down Shooter/Assets/
+Original Projects/Top-Down Shooter/Assets/*
+!Original Projects/Top-Down Shooter/Assets/To do.txt
+!Original Projects/Top-Down Shooter/Assets/_Scripts
+Original Projects/Top-Down Shooter/Assets/_Scripts/*
+!Original Projects/Top-Down Shooter/Assets/_Scripts/*.cs
 
-Castle Defender/*
-!Castle Defender/Assets/
-Castle Defender/Assets/*
-!Castle Defender/Assets/To do.xlsx
-!Castle Defender/Assets/_Scripts
-Castle Defender/Assets/_Scripts/*
-!Castle Defender/Assets/_Scripts/*.cs
+Original Projects/Castle Defender/*
+!Original Projects/Castle Defender/Assets/
+Original Projects/Castle Defender/Assets/*
+!Original Projects/Castle Defender/Assets/To do.xlsx
+!Original Projects/Castle Defender/Assets/_Scripts
+Original Projects/Castle Defender/Assets/_Scripts/*
+!Original Projects/Castle Defender/Assets/_Scripts/*.cs

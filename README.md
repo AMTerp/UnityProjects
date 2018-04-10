@@ -1,6 +1,9 @@
 ﻿# Unity Projects
 This repository contains the scripts for Unity projects that I do for the purpose of practice or am otherwise happy to make public. These projects are my first experiences with C# and object-oriented programming.
 
+## Tutorial Projects
+Projects that were made by following a tutorial.
+
 ### Roll a Ball [[Download]](https://mega.nz/#!KhQgxBgT!pvlEKbkilkBpdiaNdiZn6C2Vo2n5zqlramQ7QUkI-j4) (April 19, 2017)
 My rendition of the first Unity [tutorial](https://unity3d.com/learn/tutorials/projects/roll-ball-tutorial). Nothing particularly special about it other than it's my first Unity project.
 - Roll a ball around.
@@ -15,6 +18,9 @@ My rendition of the second Unity [tutorial](https://unity3d.com/learn/tutorials/
 - Score based on the number of asteroids destroyed.
 - Asteroids with randomly spawned models and textures.
 - Can restart this one!
+
+## Original Projects
+Projects that I developed, unaided by tutorials.
 
 ### Race the Sun Remake [[Download]](https://mega.nz/#!H1pBUQqZ!hnw-denD2tkhf1V39zaU7H54utnIiI707Kv68kLrR14) (April 26, 2017)
 My humble attempt at trying to recreate Race the Sun [[Website]](http://flippfly.com/racethesun/) [[Steam]](http://store.steampowered.com/app/253030/Race_The_Sun/), another game created in Unity. This was my first independent attempt at a Unity game after having completed the Roll a Ball and Space Shooter tutorials. 
