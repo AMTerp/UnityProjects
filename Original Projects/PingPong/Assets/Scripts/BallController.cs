@@ -5,12 +5,15 @@ using UnityEngine;
 public class BallController : MonoBehaviour
 {
     public float movementSpeed;
-    
+
+    private GameController gameController;
     private Vector2 worldVector;
 
     void Start()
     {
-        worldVector = transform.up.normalized;
+        gameController = FindObjectOfType<GameController>();
+        gameController.roundEndEvent += reset;
+        reset();
     }
 
     // Update is called once per frame
@@ -29,5 +32,10 @@ public class BallController : MonoBehaviour
 
     private void move() {
         transform.Translate(worldVector * movementSpeed  * Time.deltaTime, Space.World);
+    }
+
+    private void reset() {
+        transform.position = Vector2.zero;
+        worldVector = transform.up.normalized; // TODO: Randomize, add pause
     }
 }
