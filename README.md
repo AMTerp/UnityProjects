@@ -67,3 +67,8 @@ A first person pseudo-tower defender. Due to losing the original Unity files (lo
 - Press "Escape" to pause and read controls.
 
 For a detailed plan of (would-be) features, see Castle Defender/Assets/To do.xlsx/.
+
+### Misc
+
+#### Ping Pong
+A small, WIP implementation of ping pong to facilitate exploring Unity 2D.

@@ -37,3 +37,10 @@ Original Projects/Castle Defender/Assets/*
 !Original Projects/Castle Defender/Assets/_Scripts
 Original Projects/Castle Defender/Assets/_Scripts/*
 !Original Projects/Castle Defender/Assets/_Scripts/*.cs
+
+Original Projects/PingPong/*
+!Original Projects/PingPong/Assets/
+Original Projects/PingPong/Assets/*
+!Original Projects/PingPong/Assets/Scripts
+Original Projects/PingPong/Assets/Scripts/*
+!Original Projects/PingPong/Assets/Scripts/*.cs
