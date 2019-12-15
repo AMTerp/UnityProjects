@@ -42,7 +42,8 @@ public class PlayerController : MonoBehaviour
 
     private class PlayerMovementController
     {
-        private Direction currentDirection;
+        private Direction prevDirection;
+        private Direction nextDirection;
         private PlayerController playerController;
         private float cellsPerSecond;
         private float movementWaitTime;
@@ -54,7 +55,8 @@ public class PlayerController : MonoBehaviour
             this.cellsPerSecond = cellsPerSecond;
             this.movementWaitTime = 1 / cellsPerSecond;
             this.timeUntilNextMove = movementWaitTime;
-            currentDirection = Direction.RIGHT;
+            prevDirection = Direction.LEFT;
+            nextDirection = Direction.RIGHT;
             snakeCells = new LinkedList<SnakeCell>();
             GridCell startingCell = playerController.gridController.getCenter();
             snakeCells.AddFirst(new SnakeCell(this, startingCell));
@@ -65,7 +67,7 @@ public class PlayerController : MonoBehaviour
             foreach (SnakeCell snakeCell in snakeCells) {
                 Destroy(snakeCell.gameObject);
             }
-            currentDirection = Direction.RIGHT;
+            nextDirection = Direction.RIGHT;
             snakeCells = new LinkedList<SnakeCell>();
             GridCell startingCell = playerController.gridController.getCenter();
             snakeCells.AddFirst(new SnakeCell(this, startingCell));
@@ -84,14 +86,14 @@ public class PlayerController : MonoBehaviour
 
         private void updateInputDirection()
         {
-            if (playerPressedUp() && currentDirection != Direction.DOWN) {
-                currentDirection = Direction.UP;
-            } else if (playerPressedDown() && currentDirection != Direction.UP) {
-                currentDirection = Direction.DOWN;
-            } else if (playerPressedLeft() && currentDirection != Direction.RIGHT) {
-                currentDirection = Direction.LEFT;
-            } else if (playerPressedRight() && currentDirection != Direction.LEFT) {
-                currentDirection = Direction.RIGHT;
+            if (playerPressedUp() && prevDirection != Direction.DOWN) {
+                nextDirection = Direction.UP;
+            } else if (playerPressedDown() && prevDirection != Direction.UP) {
+                nextDirection = Direction.DOWN;
+            } else if (playerPressedLeft() && prevDirection != Direction.RIGHT) {
+                nextDirection = Direction.LEFT;
+            } else if (playerPressedRight() && prevDirection != Direction.LEFT) {
+                nextDirection = Direction.RIGHT;
             }
         }
 
@@ -128,7 +130,7 @@ public class PlayerController : MonoBehaviour
         {
             GridCell prevHeadPos = snakeCells.First.Value.pos;
             GridCell nextHeadPos = prevHeadPos;
-            switch (currentDirection) {
+            switch (nextDirection) {
                 case Direction.UP: {
                     nextHeadPos = GridCell.of(prevHeadPos.gridPos.x, prevHeadPos.gridPos.y + 1);
                     break;
@@ -146,10 +148,11 @@ public class PlayerController : MonoBehaviour
                     break;
                 }
                 default: {
-                    throw new InvalidOperationException("Enum not handled: " + currentDirection);
+                    throw new InvalidOperationException("Enum not handled: " + nextDirection);
                 };
             }
 
+            prevDirection = nextDirection;
             SnakeCell last = snakeCells.Last.Value;
             snakeCells.RemoveLast();
             snakeCells.AddFirst(last);
