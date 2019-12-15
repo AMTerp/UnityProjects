@@ -54,7 +54,7 @@ public class ScoreController : MonoBehaviour
             spawnNewPellet();
         }
 
-        private void handlePlayerMovement(GridCell oldCell, GridCell newCell)
+        private void handlePlayerMovement(GridCell newCell)
         {
             if (newCell.Equals(currentPelletCell)) {
                 scoreController.onPlayerPickup();

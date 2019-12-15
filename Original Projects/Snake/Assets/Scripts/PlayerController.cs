@@ -6,15 +6,19 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public event Action<GridCell, GridCell> playerMovementEvent;
+    public event Action<GridCell> playerMovementEvent;
     public float cellsPerSecondMovement;
+    public GameObject snakeCellPrefab;
 
     private GridController gridController;
+    private ScoreController scoreController;
     private PlayerMovementController playerMovementController;
 
     void Start()
     {
         gridController = FindObjectOfType<GridController>();
+        scoreController = FindObjectOfType<ScoreController>();
+        scoreController.scoreEvent += onScoreEvent;
         GridCell startingCell = gridController.getCenter();
         gridController.placeInCell(gameObject, startingCell);
         playerMovementController = new PlayerMovementController(this, startingCell, cellsPerSecondMovement);
@@ -25,6 +29,11 @@ public class PlayerController : MonoBehaviour
         playerMovementController.run();
     }
 
+    private void onScoreEvent(int aNewScore)
+    {
+        playerMovementController.incrementTail();
+    }
+
     private class PlayerMovementController
     {
         private Direction currentDirection = Direction.RIGHT;
@@ -32,11 +41,12 @@ public class PlayerController : MonoBehaviour
         private float cellsPerSecond;
         private float movementWaitTime;
         private float timeUntilNextMove;
-        private GridCell currentCell;
+        private LinkedList<SnakeCell> snakeCells;
 
         internal PlayerMovementController(PlayerController playerController, GridCell startingCell, float cellsPerSecond) {
             this.playerController = playerController;
-            this.currentCell = startingCell;
+            snakeCells = new LinkedList<SnakeCell>();
+            snakeCells.AddFirst(new SnakeCell(this, startingCell));
             this.cellsPerSecond = cellsPerSecond;
             this.movementWaitTime = 1 / cellsPerSecond;
             this.timeUntilNextMove = movementWaitTime;
@@ -46,6 +56,11 @@ public class PlayerController : MonoBehaviour
         {
             updateInputDirection();
             checkMovement();
+        }
+
+        internal void incrementTail()
+        {
+            snakeCells.AddLast(new SnakeCell(this, snakeCells.Last.Value.pos));
         }
 
         private void updateInputDirection()
@@ -92,32 +107,50 @@ public class PlayerController : MonoBehaviour
 
         private void move()
         {
-            GridCell previousCell = currentCell;
+            GridCell prevHeadPos = snakeCells.First.Value.pos;
+            GridCell nextHeadPos = prevHeadPos;
             switch (currentDirection) {
                 case Direction.UP: {
-                    currentCell = GridCell.of(currentCell.gridPos.x, currentCell.gridPos.y + 1);
+                    nextHeadPos = GridCell.of(prevHeadPos.gridPos.x, prevHeadPos.gridPos.y + 1);
                     break;
                 }
                 case Direction.DOWN: {
-                    currentCell = GridCell.of(currentCell.gridPos.x, currentCell.gridPos.y - 1);
+                    nextHeadPos = GridCell.of(prevHeadPos.gridPos.x, prevHeadPos.gridPos.y - 1);
                     break;
                 }
                 case Direction.LEFT: {
-                    currentCell = GridCell.of(currentCell.gridPos.x - 1, currentCell.gridPos.y);
+                    nextHeadPos = GridCell.of(prevHeadPos.gridPos.x - 1, prevHeadPos.gridPos.y);
                     break;
                 }
                 case Direction.RIGHT: {
-                    currentCell = GridCell.of(currentCell.gridPos.x + 1, currentCell.gridPos.y);
+                    nextHeadPos = GridCell.of(prevHeadPos.gridPos.x + 1, prevHeadPos.gridPos.y);
                     break;
                 }
                 default: {
                     throw new InvalidOperationException("Enum not handled: " + currentDirection);
                 };
             }
-            playerController.gridController.placeInCell(playerController.gameObject, currentCell);
+
+            SnakeCell last = snakeCells.Last.Value;
+            snakeCells.RemoveLast();
+            snakeCells.AddFirst(last);
+            last.pos = nextHeadPos;
+            playerController.gridController.placeInCell(last.gameObject, nextHeadPos);
 
             if (playerController.playerMovementEvent != null) {
-                playerController.playerMovementEvent(previousCell, currentCell);
+                playerController.playerMovementEvent(nextHeadPos);
+            }
+        }
+
+        private class SnakeCell {
+            internal GridCell pos;
+            internal readonly GameObject gameObject;
+
+            internal SnakeCell(PlayerMovementController playerMovementController, GridCell pos) {
+                this.pos = pos;
+                gameObject = Instantiate(playerMovementController.playerController.snakeCellPrefab);
+                gameObject.transform.parent = playerMovementController.playerController.transform;
+                playerMovementController.playerController.gridController.placeInCell(gameObject, pos);
             }
         }
     }
