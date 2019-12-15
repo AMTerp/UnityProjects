@@ -71,4 +71,7 @@ For a detailed plan of (would-be) features, see Castle Defender/Assets/To do.xls
 ### Misc
 
 #### Ping Pong
-A small, WIP implementation of ping pong to facilitate exploring Unity 2D.
+A small, unfinished implementation of ping pong to facilitate exploring Unity 2D.
+
+#### Snake
+A simple implementation of snake to facilitate exploring Unity 2D.
