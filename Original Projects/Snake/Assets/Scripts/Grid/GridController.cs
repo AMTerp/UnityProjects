@@ -60,7 +60,7 @@ namespace Snake.Grid {
 
         internal CellValidity getCellValidityForPos(Vector2Int gridPos)
         {
-            return gridPos.x < 0 || gridPos.x > xNumCells || gridPos.y < 0 || gridPos.y > yNumCells ? CellValidity.IN_GRID : CellValidity.OUTSIDE_GRID;
+            return (gridPos.x < 0 || gridPos.x > xNumCells - 1 || gridPos.y < 0 || gridPos.y > yNumCells - 1) ? CellValidity.OUTSIDE_GRID : CellValidity.IN_GRID;
         }
         
         private Vector2 calculateScreenArea(Camera camera)

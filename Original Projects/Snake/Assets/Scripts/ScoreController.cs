@@ -14,6 +14,7 @@ public class ScoreController : MonoBehaviour
 
     private GridController gridController;
     private PlayerController playerController;
+    private GameController gameController;
     private PelletController pelletController;
     private int currentScore = 0;
 
@@ -21,9 +22,18 @@ public class ScoreController : MonoBehaviour
     {
         gridController = FindObjectOfType<GridController>();
         playerController = FindObjectOfType<PlayerController>();
+        gameController = FindObjectOfType<GameController>();
         pelletController = new PelletController(this);
         pelletController.Start();
         setScoreText(0);
+        gameController.resetGameEvent += reset;
+    }
+
+    public void reset()
+    {
+        currentScore = 0;
+        setScoreText(currentScore);
+        pelletController.reset();
     }
 
     private void onPlayerPickup()
@@ -56,6 +66,12 @@ public class ScoreController : MonoBehaviour
             spawnNewPellet();
         }
 
+        internal void reset()
+        {
+            destroyPellet();
+            spawnNewPellet();
+        }
+
         private void handlePlayerMovement(GridCell newCell)
         {
             if (newCell.Equals(currentPelletCell)) {
@@ -63,6 +79,11 @@ public class ScoreController : MonoBehaviour
                 Destroy(currentPellet);
                 spawnNewPellet();
             }
+        }
+
+        private void destroyPellet()
+        {
+            Destroy(currentPellet);
         }
 
         // TODO: Prevent spawning a pellet on the player.

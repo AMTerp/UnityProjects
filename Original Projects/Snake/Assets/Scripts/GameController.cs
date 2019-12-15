@@ -6,24 +6,26 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
+    public event Action resetGameEvent;
+
     private GridController gridController;
+    private PlayerController playerController;
+    private ScoreController scoreController;
 
     void Start()
     {
         gridController = FindObjectOfType<GridController>();
-        initializeGame();
+        playerController = FindObjectOfType<PlayerController>();
+        scoreController = FindObjectOfType<ScoreController>();
+        playerController.playerMovementEvent += handlePlayerMove;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void handlePlayerMove(GridCell newCell)
     {
-        
-    }
-
-    private void initializeGame()
-    {
-        // initializeScore();
-        // initializePlayer();
-        // initializeScoreController();
+        if (newCell.cellValidity == CellValidity.OUTSIDE_GRID) {
+            if (resetGameEvent != null) {
+                resetGameEvent();
+            }
+        }
     }
 }
