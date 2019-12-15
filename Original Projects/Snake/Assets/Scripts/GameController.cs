@@ -17,15 +17,25 @@ public class GameController : MonoBehaviour
         gridController = FindObjectOfType<GridController>();
         playerController = FindObjectOfType<PlayerController>();
         scoreController = FindObjectOfType<ScoreController>();
-        playerController.playerMovementEvent += handlePlayerMove;
+        playerController.playerMovementEvent += onPlayerMove;
+        playerController.ateOwnTailEvent += onEatOwnTail;
     }
 
-    private void handlePlayerMove(GridCell newCell)
+    private void onEatOwnTail()
+    {
+        triggerGameReset();
+    }
+
+    private void onPlayerMove(GridCell newCell)
     {
         if (newCell.cellValidity == CellValidity.OUTSIDE_GRID) {
-            if (resetGameEvent != null) {
-                resetGameEvent();
-            }
+            triggerGameReset();
+        }
+    }
+
+    private void triggerGameReset() {
+        if (resetGameEvent != null) {
+            resetGameEvent();
         }
     }
 }

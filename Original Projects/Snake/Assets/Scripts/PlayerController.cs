@@ -7,6 +7,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public event Action<GridCell> playerMovementEvent;
+    public event Action ateOwnTailEvent;
     public float cellsPerSecondMovement;
     public GameObject snakeCellPrefab;
 
@@ -77,6 +78,7 @@ public class PlayerController : MonoBehaviour
         {
             updateInputDirection();
             checkMovement();
+            checkIfEatingOwnTail();
         }
 
         internal void incrementTail()
@@ -164,6 +166,28 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        private void checkIfEatingOwnTail()
+        {
+            if (!canEatOwnTail()) {
+                return;
+            }
+
+            SnakeCell head = snakeCells.First.Value;
+            LinkedListNode<SnakeCell> currSnakeCell = snakeCells.First;
+            while (currSnakeCell.Next != null) {
+                currSnakeCell = currSnakeCell.Next;
+                if (currSnakeCell.Value.pos.Equals(head.pos)) {
+                    playerController.ateOwnTailEvent();
+                    return;
+                }
+            }
+        }
+
+        private bool canEatOwnTail()
+        {
+            return snakeCells.Count > 4;
+        }
+
         private class SnakeCell {
             internal GridCell pos;
             internal readonly GameObject gameObject;
@@ -175,13 +199,13 @@ public class PlayerController : MonoBehaviour
                 playerMovementController.playerController.gridController.placeInCell(gameObject, pos);
             }
         }
-    }
 
-    private enum Direction
-    {
-        UP,
-        DOWN,
-        LEFT,
-        RIGHT
+        private enum Direction
+        {
+            UP,
+            DOWN,
+            LEFT,
+            RIGHT
+        }
     }
 }
