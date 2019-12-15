@@ -3,12 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using Snake.Grid;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ScoreController : MonoBehaviour
 {
     public event Action<int> scoreEvent;
 
     public GameObject pelletPrefab;
+    public Text scoreText;
 
     private GridController gridController;
     private PlayerController playerController;
@@ -21,21 +23,21 @@ public class ScoreController : MonoBehaviour
         playerController = FindObjectOfType<PlayerController>();
         pelletController = new PelletController(this);
         pelletController.Start();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        setScoreText(0);
     }
 
     private void onPlayerPickup()
     {
         currentScore++;
-        Debug.Log("New score: " + currentScore);
+        setScoreText(currentScore);
         if (scoreEvent != null) {
             scoreEvent(currentScore);
         }
+    }
+
+    private void setScoreText(int newScore)
+    {
+        scoreText.text = newScore.ToString();
     }
 
     private class PelletController
