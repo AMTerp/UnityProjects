@@ -20,6 +20,14 @@ namespace Snake.Grid {
             cellValidity = gridController.getCellValidityForPos(gridPos);
         }
 
+        public override bool Equals(object obj) {
+            return Equals(obj as GridCell);
+        }
+
+        public bool Equals(GridCell other) {
+            return other != null && this.gridPos == other.gridPos;
+        }
+
         public class GridCellFactory : ScriptableObject
         {
             private static GridController gridController = FindObjectOfType<GridController>();

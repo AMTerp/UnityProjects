@@ -42,6 +42,11 @@ namespace Snake.Grid {
         {
             return GridCell.of((xNumCells - 1) / 2, (yNumCells - 1) / 2);
         }
+
+        public GridCell getRandomCell()
+        {
+            return GridCell.of(UnityEngine.Random.Range(0, xNumCells), UnityEngine.Random.Range(0, yNumCells));
+        }
         
 
         internal Vector2 gridToWorldPos(Vector2Int gridPos) {

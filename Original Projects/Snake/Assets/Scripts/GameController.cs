@@ -23,11 +23,7 @@ public class GameController : MonoBehaviour
     private void initializeGame()
     {
         // initializeScore();
-        initializePlayer();
-    }
-
-    private void initializePlayer()
-    {
-        
+        // initializePlayer();
+        // initializeScoreController();
     }
 }
