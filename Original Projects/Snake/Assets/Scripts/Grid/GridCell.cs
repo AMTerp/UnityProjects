@@ -4,33 +4,29 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Snake.Grid {
-    public class GridCell : MonoBehaviour
+    public class GridCell
     {
-        private static bool initialized = false;
-        private static GridController gridController;
-
         public readonly Vector2Int gridPos;
         public readonly CellValidity cellValidity;
-        
+
         internal readonly Vector2 floatPos;
 
-        void Start()
-        {
-            if (!initialized) {
-                initialize();
-            }
+        public static GridCell of(int x, int y) {
+            return GridCellFactory.getCell(x, y);
         }
-
-        public GridCell(int x, int y) {
+        private GridCell(int x, int y, GridController gridController) {
             gridPos = new Vector2Int(x, y);
-            gridController.gridToWorldPos(gridPos);
+            floatPos = gridController.gridToWorldPos(gridPos);
             cellValidity = gridController.getCellValidityForPos(gridPos);
         }
 
-        private void initialize()
+        public class GridCellFactory : ScriptableObject
         {
-            gridController = FindObjectOfType<GridController>();
-            initialized = true;
+            private static GridController gridController = FindObjectOfType<GridController>();
+            
+            internal static GridCell getCell(int x, int y) {
+                return new GridCell(x, y, gridController);
+            }
         }
     }
 }

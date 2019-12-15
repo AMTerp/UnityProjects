@@ -11,6 +11,7 @@ namespace Snake.Grid {
         private const float CELL_SIZE = 1f;
 
         public int yNumCells;
+
         public GameObject cellSpritePrefab;
 
         private Camera playerCamera;
@@ -19,8 +20,7 @@ namespace Snake.Grid {
         private float xStart;
         private float yStart;
 
-        // Start is called before the first frame update
-        void Start()
+        void Awake()
         {
             playerCamera = FindObjectOfType<Camera>();
             playerCamera.orthographicSize = yNumCells / 2f;
@@ -30,6 +30,17 @@ namespace Snake.Grid {
             yStart = -yNumCells / 2f + CELL_SIZE / 2f;
             drawGrid();
             placeBlackBars();
+        }
+
+        public void placeInCell(GameObject gameObject, GridCell gridCell)
+        {
+            gameObject.transform.position = gridCell.floatPos;
+        }
+
+        // Returns the center cell for the grid. If there is truly no center (due to even number of x and/or y cells), returns the cell closer to the origin (bottom left).
+        public GridCell getCenter()
+        {
+            return GridCell.of((xNumCells - 1) / 2, (yNumCells - 1) / 2);
         }
         
 
