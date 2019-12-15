@@ -14,10 +14,10 @@ namespace Snake.Grid {
         public static GridCell of(int x, int y) {
             return GridCellFactory.getCell(x, y);
         }
-        private GridCell(int x, int y, GridController gridController) {
-            gridPos = new Vector2Int(x, y);
-            floatPos = gridController.gridToWorldPos(gridPos);
-            cellValidity = gridController.getCellValidityForPos(gridPos);
+        private GridCell(Vector2Int gridPos, GridController gridController) {
+            this.gridPos = gridPos;
+            this.floatPos = gridController.gridToWorldPos(gridPos);
+            this.cellValidity = gridController.getCellValidityForPos(gridPos);
         }
 
         public override bool Equals(object obj) {
@@ -31,9 +31,18 @@ namespace Snake.Grid {
         public class GridCellFactory : ScriptableObject
         {
             private static GridController gridController = FindObjectOfType<GridController>();
+            private static Dictionary<Vector2Int, GridCell> gridCellCache = new Dictionary<Vector2Int, GridCell>();
             
             internal static GridCell getCell(int x, int y) {
-                return new GridCell(x, y, gridController);
+                Vector2Int gridPos = new Vector2Int(x, y);
+                GridCell requestedCell;
+                if (gridCellCache.TryGetValue(gridPos, out requestedCell)) {
+                    return requestedCell;
+                } else {
+                    requestedCell = new GridCell(gridPos, gridController);
+                    gridCellCache.Add(gridPos, requestedCell);
+                    return requestedCell;
+                }
             }
         }
     }
