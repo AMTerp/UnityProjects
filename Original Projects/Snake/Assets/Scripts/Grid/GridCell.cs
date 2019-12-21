@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Snake.Grid {
     public class GridCell
@@ -14,6 +15,11 @@ namespace Snake.Grid {
         public static GridCell of(int x, int y) {
             return GridCellFactory.getCell(x, y);
         }
+
+        public static void initializeFactory() {
+            GridCellFactory.initialize();
+        }
+
         private GridCell(Vector2Int gridPos, GridController gridController) {
             this.gridPos = gridPos;
             this.floatPos = gridController.gridToWorldPos(gridPos);
@@ -28,11 +34,17 @@ namespace Snake.Grid {
             return other != null && this.gridPos == other.gridPos;
         }
 
-        public class GridCellFactory : ScriptableObject
+        private class GridCellFactory : ScriptableObject
         {
-            private static GridController gridController = FindObjectOfType<GridController>();
+            private static GridController gridController = null;
             private static Dictionary<Vector2Int, GridCell> gridCellCache = new Dictionary<Vector2Int, GridCell>();
-            
+
+            internal static void initialize()
+            {
+                gridController = FindObjectOfType<GridController>();
+                gridCellCache.Clear();
+            }
+
             internal static GridCell getCell(int x, int y) {
                 Vector2Int gridPos = new Vector2Int(x, y);
                 GridCell requestedCell;

@@ -23,10 +23,10 @@ public class GameController : MonoBehaviour
         SceneManager.sceneUnloaded += OnSceneChange;
     }
 
-    public static void ToggleCursor(bool enable)
+    public static void ToggleCursor(bool enableCursor)
     {
-        Cursor.lockState = enable ? CursorLockMode.Confined : CursorLockMode.Locked;
-        Cursor.visible = enable;
+        Cursor.lockState = enableCursor ? CursorLockMode.Confined : CursorLockMode.Locked;
+        Cursor.visible = enableCursor;
     }
 
     private static void onEatOwnTail()

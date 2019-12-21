@@ -22,6 +22,7 @@ namespace Snake.Grid {
 
         void Awake()
         {
+            GridCell.initializeFactory();
             xNumCells = SettingsProvider.numXCells;
             yNumCells = SettingsProvider.numYCells;
             playerCamera = FindObjectOfType<Camera>();

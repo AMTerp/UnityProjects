@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PauseController : MonoBehaviour
 {
     public static bool paused { get; private set; }
     public GameObject pauseUi;
+    public SwitchScene toMainMenuSwitcher;
 
     void Start()
     {
@@ -15,6 +17,14 @@ public class PauseController : MonoBehaviour
     void Update()
     {
         CheckPlayerInput();
+    }
+
+    // When the "Quit to main menu" button is clicked.
+    public void OnMainMenuClick()
+    {
+        Time.timeScale = 1f;
+        paused = false;
+        toMainMenuSwitcher.ChangeScene();
     }
     
     private void CheckPlayerInput()

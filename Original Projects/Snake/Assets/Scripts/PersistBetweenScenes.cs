@@ -7,5 +7,10 @@ public class PersistBetweenScenes : MonoBehaviour
     void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
+
+        if (FindObjectsOfType(GetType()).Length > 1)
+        {
+            Destroy(gameObject);
+        }
     }
 }
