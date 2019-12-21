@@ -14,7 +14,6 @@ public class PlayerController : MonoBehaviour
     private int snakeGrowthTilesPerPellet;
     private GridController gridController;
     private ScoreController scoreController;
-    private GameController gameController;
     private PlayerMovementController playerMovementController;
 
     void Start()
@@ -23,9 +22,8 @@ public class PlayerController : MonoBehaviour
         snakeGrowthTilesPerPellet = SettingsProvider.snakeGrowthTilesPerPellet;
         gridController = FindObjectOfType<GridController>();
         scoreController = FindObjectOfType<ScoreController>();
-        gameController = FindObjectOfType<GameController>();
         playerMovementController = new PlayerMovementController(this, cellsPerSecondMovement);
-        gameController.resetGameEvent += reset;
+        GameController.resetGameEvent += reset;
         scoreController.scoreEvent += onScoreEvent;
     }
 

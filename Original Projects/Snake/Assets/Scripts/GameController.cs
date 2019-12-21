@@ -3,14 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using Snake.Grid;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
-    public event Action resetGameEvent;
+    public static event Action resetGameEvent;
 
-    private GridController gridController;
-    private PlayerController playerController;
-    private ScoreController scoreController;
+    private static GridController gridController;
+    private static PlayerController playerController;
+    private static ScoreController scoreController;
 
     void Start()
     {
@@ -19,23 +20,36 @@ public class GameController : MonoBehaviour
         scoreController = FindObjectOfType<ScoreController>();
         playerController.playerMovementEvent += onPlayerMove;
         playerController.ateOwnTailEvent += onEatOwnTail;
+        SceneManager.sceneUnloaded += OnSceneChange;
     }
 
-    private void onEatOwnTail()
+    public static void ToggleCursor(bool enable)
+    {
+        Cursor.lockState = enable ? CursorLockMode.Confined : CursorLockMode.Locked;
+        Cursor.visible = enable;
+    }
+
+    private static void onEatOwnTail()
     {
         triggerGameReset();
     }
 
-    private void onPlayerMove(GridCell newCell)
+    private static void onPlayerMove(GridCell newCell)
     {
         if (newCell.cellValidity == CellValidity.OUTSIDE_GRID) {
             triggerGameReset();
         }
     }
 
-    private void triggerGameReset() {
+    private static void triggerGameReset() {
         if (resetGameEvent != null) {
             resetGameEvent();
         }
+    }
+
+    private void OnSceneChange(Scene current)
+    {
+        // Reset subscriptions.
+        resetGameEvent = null;
     }
 }

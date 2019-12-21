@@ -14,7 +14,6 @@ public class ScoreController : MonoBehaviour
 
     private GridController gridController;
     private PlayerController playerController;
-    private GameController gameController;
     private PelletController pelletController;
     private int currentScore = 0;
 
@@ -22,11 +21,10 @@ public class ScoreController : MonoBehaviour
     {
         gridController = FindObjectOfType<GridController>();
         playerController = FindObjectOfType<PlayerController>();
-        gameController = FindObjectOfType<GameController>();
         pelletController = new PelletController(this);
         pelletController.Start();
         setScoreText(0);
-        gameController.resetGameEvent += reset;
+        GameController.resetGameEvent += reset;
     }
 
     public void reset()
