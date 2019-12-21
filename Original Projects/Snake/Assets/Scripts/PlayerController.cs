@@ -8,9 +8,10 @@ public class PlayerController : MonoBehaviour
 {
     public event Action<GridCell> playerMovementEvent;
     public event Action ateOwnTailEvent;
-    public float cellsPerSecondMovement;
     public GameObject snakeCellPrefab;
 
+    private float cellsPerSecondMovement;
+    private int snakeGrowthTilesPerPellet;
     private GridController gridController;
     private ScoreController scoreController;
     private GameController gameController;
@@ -18,6 +19,8 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        cellsPerSecondMovement = SettingsProvider.cellsPerSecondMovement;
+        snakeGrowthTilesPerPellet = SettingsProvider.snakeGrowthTilesPerPellet;
         gridController = FindObjectOfType<GridController>();
         scoreController = FindObjectOfType<ScoreController>();
         gameController = FindObjectOfType<GameController>();
@@ -33,7 +36,7 @@ public class PlayerController : MonoBehaviour
 
     private void onScoreEvent(int aNewScore)
     {
-        playerMovementController.incrementTail();
+        playerMovementController.incrementTail(snakeGrowthTilesPerPellet);
     }
 
     private void reset()
@@ -76,14 +79,17 @@ public class PlayerController : MonoBehaviour
 
         internal void run()
         {
+            timeUntilNextMove -= Time.deltaTime;
             updateInputDirection();
+            checkIfWillEatOwnTail();
             checkMovement();
-            checkIfEatingOwnTail();
         }
 
-        internal void incrementTail()
+        internal void incrementTail(int numSnakeCellsToGrowBy)
         {
-            snakeCells.AddLast(new SnakeCell(this, snakeCells.Last.Value.pos));
+            for (int i = 0; i < numSnakeCellsToGrowBy; i++) {
+                snakeCells.AddLast(new SnakeCell(this, snakeCells.Last.Value.pos));
+            }
         }
 
         private void updateInputDirection()
@@ -121,7 +127,6 @@ public class PlayerController : MonoBehaviour
 
         private void checkMovement()
         {
-            timeUntilNextMove -= Time.deltaTime;
             if (timeUntilNextMove < 0) {
                 move();
                 timeUntilNextMove = movementWaitTime;
@@ -131,28 +136,7 @@ public class PlayerController : MonoBehaviour
         private void move()
         {
             GridCell prevHeadPos = snakeCells.First.Value.pos;
-            GridCell nextHeadPos = prevHeadPos;
-            switch (nextDirection) {
-                case Direction.UP: {
-                    nextHeadPos = GridCell.of(prevHeadPos.gridPos.x, prevHeadPos.gridPos.y + 1);
-                    break;
-                }
-                case Direction.DOWN: {
-                    nextHeadPos = GridCell.of(prevHeadPos.gridPos.x, prevHeadPos.gridPos.y - 1);
-                    break;
-                }
-                case Direction.LEFT: {
-                    nextHeadPos = GridCell.of(prevHeadPos.gridPos.x - 1, prevHeadPos.gridPos.y);
-                    break;
-                }
-                case Direction.RIGHT: {
-                    nextHeadPos = GridCell.of(prevHeadPos.gridPos.x + 1, prevHeadPos.gridPos.y);
-                    break;
-                }
-                default: {
-                    throw new InvalidOperationException("Enum not handled: " + nextDirection);
-                };
-            }
+            GridCell nextHeadPos = calculateNextGridCell(prevHeadPos, nextDirection);
 
             prevDirection = nextDirection;
             SnakeCell last = snakeCells.Last.Value;
@@ -166,26 +150,43 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        private void checkIfEatingOwnTail()
+        private GridCell calculateNextGridCell(GridCell currPos, Direction direction) {
+            switch (direction) {
+                case Direction.UP: {
+                    return GridCell.of(currPos.gridPos.x, currPos.gridPos.y + 1);
+                }
+                case Direction.DOWN: {
+                    return GridCell.of(currPos.gridPos.x, currPos.gridPos.y - 1);
+                }
+                case Direction.LEFT: {
+                    return GridCell.of(currPos.gridPos.x - 1, currPos.gridPos.y);
+                }
+                case Direction.RIGHT: {
+                    return GridCell.of(currPos.gridPos.x + 1, currPos.gridPos.y);
+                }
+                default: {
+                    throw new InvalidOperationException("Enum not handled: " + direction);
+                };
+            }
+        }
+
+        private void checkIfWillEatOwnTail()
         {
-            if (!canEatOwnTail()) {
+            if (timeUntilNextMove > 0) {
                 return;
             }
 
-            SnakeCell head = snakeCells.First.Value;
+            GridCell nextHeadGridPos = calculateNextGridCell(snakeCells.First.Value.pos, nextDirection);
             LinkedListNode<SnakeCell> currSnakeCell = snakeCells.First;
-            while (currSnakeCell.Next != null) {
+            // When the head moves, so does the snake cell at the end of the tail. Therefore, we don't want to check
+            // if we end up eating it.
+            while (currSnakeCell.Next != null && currSnakeCell.Next.Next != null) {
                 currSnakeCell = currSnakeCell.Next;
-                if (currSnakeCell.Value.pos.Equals(head.pos)) {
+                if (currSnakeCell.Value.pos.Equals(nextHeadGridPos)) {
                     playerController.ateOwnTailEvent();
                     return;
                 }
             }
-        }
-
-        private bool canEatOwnTail()
-        {
-            return snakeCells.Count > 4;
         }
 
         private class SnakeCell {

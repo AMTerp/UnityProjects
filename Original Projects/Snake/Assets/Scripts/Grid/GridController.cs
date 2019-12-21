@@ -10,22 +10,23 @@ namespace Snake.Grid {
         private const String RIGHT_BLACK_BAR_TAG = "RightBlackBar";
         private const float CELL_SIZE = 1f;
 
-        public int yNumCells;
 
         public GameObject cellSpritePrefab;
 
+        private int xNumCells;
+        private int yNumCells;
         private Camera playerCamera;
         private Vector2 screenArea;
-        private int xNumCells;
         private float xStart;
         private float yStart;
 
         void Awake()
         {
+            xNumCells = SettingsProvider.numXCells;
+            yNumCells = SettingsProvider.numYCells;
             playerCamera = FindObjectOfType<Camera>();
             playerCamera.orthographicSize = yNumCells / 2f;
             screenArea = calculateScreenArea(playerCamera);
-            xNumCells = Mathf.FloorToInt(screenArea.x);
             xStart = -xNumCells / 2f + CELL_SIZE / 2f;
             yStart = -yNumCells / 2f + CELL_SIZE / 2f;
             drawGrid();
